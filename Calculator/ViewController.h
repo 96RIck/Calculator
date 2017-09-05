@@ -16,14 +16,20 @@
 }
 
 @property(nonatomic,retain) UIButton *button ;
-@property(nonatomic,retain) UILabel *label ;
+@property(nonatomic,retain) UILabel *label1 ;
+@property(nonatomic,retain) UILabel *label2 ;
+@property(nonatomic,retain) UILabel *label3 ;
 @property(nonatomic,retain) NSMutableString *string;
 @property(nonatomic,retain) NSString *resultString;
-@property(nonatomic,assign) double num1,num2,num3;
+@property(nonatomic,assign) NSString *lengthString;
+@property(nonatomic,assign) long double num1,num2,num3;
 @property(nonatomic,assign) NSString *characterStr;
 @property(nonatomic,assign) int fontSize;
+@property(nonatomic,assign) NSInteger length;
+@property(nonatomic,assign) NSString *strResult;
 @property(nonatomic,assign) CGFloat DeviceScreenWidth ;
 @property(nonatomic,assign) CGFloat DeviceScreenHeight ;
+
 
 
 

@@ -29,29 +29,47 @@
     
     //初始化ResultString
     _resultString = _string;
-
+   
+    
+    
+    
+    
 //MARK: -控制输入数字时“.”的出现次数为1次。检测到点的个数超过一个时，删除掉最后一个
 
     if (notAppendPoint == YES)
     {
+        
+        
         if ([[sender currentTitle] isEqualToString:@"."])   //判断最新追加的字符是为“.”
         {
-            NSRange deleteRange = {[_string length] -1,1};  //创建deleteRange
-            [_string deleteCharactersInRange:deleteRange];  //将NSMutaleString多余添加的"."删除
+            if ([_label1.text isEqualToString:@"0"] | [_label1.text isEqualToString:@"0."] | [_string isEqualToString:@"."])        //判断是否直接追加各位为0的小数
+            {
+                //如果直接输入小数点，则显示0.
+                [_string setString:@"0."];
+            }
+            else if ((_num1 == 0) && [_label1.text isEqualToString:@"."])
+            {
+                NSRange deleteRange = {[_string length] -1,1};  //创建deleteRange
+                [_string deleteCharactersInRange:deleteRange];//将NSMutaleString多余添加的"."删除
+            }
+            
+            havePoint = YES;
         }
     }
     
-    if ([_resultString rangeOfString:@"."].location != NSNotFound) //判断输入的字符是否为"."
+    if ([[sender currentTitle] isEqualToString:@"."]) //判断输入的字符是否为"."
     {
+        NSString *str1 = @".";
+        [_resultString stringByAppendingString:str1];
         notAppendPoint = YES;                                      //将不在追加“.”
     }
     
     //打印bool值 NSLog(@"appendPoint value: %@" ,notAppendPoint?@"YES":@"NO");
     //显示数值
     NSLog(@"AAAAAAA%@",_string);
-    self.label.text = [NSString stringWithString:_resultString];
-    self.num1 = [self.label.text doubleValue];
-    NSLog(@"self.num1 is %f",self.num1) ;
+    self.label1.text = [NSString stringWithString:_resultString];
+    self.num1 = [self.label1.text doubleValue];
+    NSLog(@"self.num1 is %Lf",self.num1) ;
     
 }
 
@@ -59,16 +77,46 @@
 {
     if ([_characterStr isEqualToString:@""])
     {
-        _num2 = _num1;
-        NSLog(@"self.num2 is %f",_num2);
-        _label.text = [NSString stringWithString:_string];
-        [_string setString:@""];
         _characterStr = [sender currentTitle];
+        _num2 = _num1;
+        NSLog(@"self.num2 is %Lf",_num2);
         
-        NSLog(@"%@",_characterStr);
+        _label2.text = [NSString stringWithString:_string];
+        [_string setString:@""];
+        _label3.text = [sender currentTitle];
+        _label1.text = @"0";
         
-        
-        
+    }
+    else
+    {
+        if ([_characterStr isEqualToString:@"＋"]) {
+            _characterStr = [sender currentTitle];
+            //把新输入的_string加入到_num1中
+            _num1 = [_label1.text doubleValue];
+            //计算结果Num3
+            _num3 = _num2 +_num1 ;
+            _num2 = _num3 ;
+            NSLog(@"aaaaa%Lf",_num3);
+            
+            _lengthString = [NSString stringWithFormat:@"%Lf", _num3];
+            
+            _length = [_lengthString length];
+            for(int i = 0; i<=5; i++)
+            {
+                NSString *subString = [_lengthString substringFromIndex:_length - i];
+                if([subString isEqualToString:@"0"])
+                {
+                    _lengthString = [_lengthString substringToIndex:_length - i];
+                }
+                
+            }
+            
+            [_string setString:@""];
+            _label3.text = [sender currentTitle];
+            _label1.text = @"0";
+            _num1 = 0;
+            [_label2 setText:_lengthString];
+        }
     }
 }
 
@@ -123,6 +171,7 @@
     }
  
     self.view.backgroundColor = [UIColor blackColor];
+    
     UILabel *labelRect = [[UILabel alloc]initWithFrame:CGRectMake(0, ResultLabelRectHeight, ButtonWidth*3, ButtonHeight)];
     labelRect.backgroundColor = [UIColor darkGrayColor];
     [self.view addSubview:labelRect];
@@ -132,14 +181,32 @@
     
     //搭建UI
     
-    //创建ResultLabel
-    self.label = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, ResultLabelRectWidth, ResultLabelRectHeight)] ;
-    [self.view addSubview:_label] ;
-    self.label.backgroundColor = [UIColor blackColor] ;
-    self.label.textColor = [UIColor whiteColor] ;
-    self.label.textAlignment = NSTextAlignmentRight;
-    self.label.font = [UIFont systemFontOfSize:_fontSize] ;
-    self.label.text = @"0";
+    //创建ResultLabel1
+    self.label1 = [[UILabel alloc]initWithFrame:CGRectMake(0, ResultLabelRectHeight/2, ResultLabelRectWidth-20, ResultLabelRectHeight/2)] ;
+    [self.view addSubview:_label1] ;
+    self.label1.backgroundColor = [UIColor blackColor] ;
+    self.label1.textColor = [UIColor whiteColor] ;
+    self.label1.textAlignment = NSTextAlignmentRight;
+    self.label1.font = [UIFont systemFontOfSize:_fontSize] ;
+    self.label1.text = @"0";
+    
+    
+    //创建ResultLabel2
+    _label2 = [[UILabel alloc]initWithFrame:CGRectMake(0, 30, ResultLabelRectWidth-20, ResultLabelRectHeight/2)];
+    [self.view addSubview:_label2];
+    self.label2.backgroundColor = [UIColor blackColor] ;
+    self.label2.textColor = [UIColor whiteColor] ;
+    self.label2.textAlignment = NSTextAlignmentRight;
+    self.label2.font = [UIFont systemFontOfSize:_fontSize-15] ;
+    
+    
+    //创建ResultLabel3
+    _label3 = [[UILabel alloc]initWithFrame:CGRectMake(0, ButtonWidth+30, ButtonWidth/2, ButtonHeight-30)];
+    [self.view addSubview:_label3];
+    self.label3.backgroundColor = [UIColor blackColor] ;
+    self.label3.textColor = [UIColor whiteColor] ;
+    self.label3.textAlignment = NSTextAlignmentCenter;
+    self.label3.font = [UIFont systemFontOfSize:_fontSize-6] ;
     
     //添加1-9数字
     NSArray * array = [NSArray arrayWithObjects:@"1",@"2",@"3",@"4",@"5",@"6",@"7",@"8",@"9", nil] ;
