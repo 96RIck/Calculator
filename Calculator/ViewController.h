@@ -10,12 +10,17 @@
 #import <Foundation/Foundation.h>
 
 @interface ViewController : UIViewController
+{
+    BOOL havePoint;
+    BOOL notAppendPoint;
+}
 
 @property(nonatomic,retain) UIButton *button ;
 @property(nonatomic,retain) UILabel *label ;
 @property(nonatomic,retain) NSMutableString *string;
+@property(nonatomic,retain) NSString *resultString;
 @property(nonatomic,assign) double num1,num2,num3;
-@property(nonatomic,assign) NSString *str;
+@property(nonatomic,assign) NSString *charcterStr;
 @property(nonatomic,assign) int fontSize;
 @property(nonatomic,assign) CGFloat DeviceScreenWidth ;
 @property(nonatomic,assign) CGFloat DeviceScreenHeight ;

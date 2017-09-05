@@ -22,12 +22,67 @@
 
 @implementation ViewController
 
+//设置按下数字方法
+-(void)shuzi:(id)sender
+{
+    [self.string appendString:[sender currentTitle]];       //数字追加到string
+    
+    //初始化ResultString
+    _resultString = _string;
 
+//MARK: -控制输入数字时“.”的出现次数为1次。检测到点的个数超过一个时，删除掉最后一个
+
+    if (notAppendPoint == YES)
+    {
+        if ([[sender currentTitle] isEqualToString:@"."])   //判断最新追加的字符是为“.”
+        {
+            NSRange deleteRange = {[_string length] -1,1};  //创建deleteRange
+            [_string deleteCharactersInRange:deleteRange];  //将NSMutaleString多余添加的"."删除
+        }
+    }
+    
+    if ([_resultString rangeOfString:@"."].location != NSNotFound) //判断输入的字符是否为"."
+    {
+        notAppendPoint = YES;                                      //将不在追加“.”
+    }
+    
+    //打印bool值 NSLog(@"appendPoint value: %@" ,notAppendPoint?@"YES":@"NO");
+    //显示数值
+    NSLog(@"AAAAAAA%@",_string);
+    self.label.text = [NSString stringWithString:_resultString];
+    self.num1 = [self.label.text doubleValue];
+    NSLog(@"self.num1 is %f",self.num1) ;
+    
+}
+
+-(void) run:(id)sender
+{
+    if ([_charcterStr isEqualToString:@""])
+    {
+        _num2 = _num1;
+        NSLog(@"self.num2 is %f",_num2);
+        _label.text = [NSString stringWithString:_string];
+        [_string setString:@""];
+        _charcterStr = [sender currentTitle];
+        
+        NSLog(@"%@",_charcterStr);
+        
+        
+        
+    }
+}
 
 
 - (void)viewDidLoad {
     [super viewDidLoad];
- 
+
+    //初始化可变字符串，分配内存
+    self.string=[NSMutableString stringWithCapacity:10];
+    self.charcterStr = [[NSString alloc]init];
+    
+
+    
+//MARK1 : -总体UI搭建和相关设置
     
     //设置按钮区域总宽高，显示label总宽高，单个按钮宽高
     float ButtonWidth = MainScreenWidth/4;
@@ -46,7 +101,8 @@
     NSString * DeviceVersion ;
     
     //判断机型，设置全局Button字体
-    if (_DeviceScreenWidth == 320 && _DeviceScreenHeight == 480) {
+    if (_DeviceScreenWidth == 320 && _DeviceScreenHeight == 480)
+    {
         DeviceVersion = @"IPhone4";
         _fontSize = 26;
     }
@@ -68,9 +124,13 @@
  
     self.view.backgroundColor = [UIColor blackColor];
     UILabel *labelRect = [[UILabel alloc]initWithFrame:CGRectMake(0, ResultLabelRectHeight, ButtonWidth*3, ButtonHeight)];
-    labelRect.backgroundColor = [UIColor lightGrayColor];
+    labelRect.backgroundColor = [UIColor darkGrayColor];
     [self.view addSubview:labelRect];
     
+    NSLog(@"appendPoint value: %@" ,notAppendPoint?@"YES":@"NO");
+
+    
+    //搭建UI
     
     //创建ResultLabel
     self.label = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, ResultLabelRectWidth, ResultLabelRectHeight)] ;
@@ -78,8 +138,8 @@
     self.label.backgroundColor = [UIColor blackColor] ;
     self.label.textColor = [UIColor whiteColor] ;
     self.label.textAlignment = NSTextAlignmentRight;
-    self.label.font = [UIFont systemFontOfSize:32.4] ;
-    
+    self.label.font = [UIFont systemFontOfSize:_fontSize] ;
+    self.label.text = @"0";
     
     //添加1-9数字
     NSArray * array = [NSArray arrayWithObjects:@"1",@"2",@"3",@"4",@"5",@"6",@"7",@"8",@"9", nil] ;
@@ -146,15 +206,17 @@
     buttonPoint.layer.borderWidth = 0.5;
     [buttonPoint.layer setBorderColor:[[UIColor darkGrayColor]CGColor]] ;
     
+    
     [buttonPoint addTarget:self action:@selector(shuzi:) forControlEvents:UIControlEventTouchUpInside] ;
     [self.view addSubview:buttonPoint] ;
+
     
     
     //添加运算符：
     NSArray *array1 = [NSArray arrayWithObjects:@"＋",@"－",@"×",@"÷", nil] ;
     for (int i = 0; i<4; i++)
     {
-        UIButton *button1 = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        UIButton *button1 = [UIButton buttonWithType:UIButtonTypeCustom];
         [button1 setFrame:CGRectMake(ButtonWidth*3, ResultLabelRectHeight+ButtonHeight*i, ButtonWidth, ButtonWidth)] ;
         [button1 setTitle:[array1 objectAtIndex:i] forState:UIControlStateNormal];
         [button1 setBackgroundImage:[UIImage imageNamed:@"keypad_button_colored_background"] forState:UIControlStateNormal];
@@ -166,14 +228,14 @@
         [button1.layer setBorderWidth:.5];
         [button1.layer setBorderColor:[[UIColor darkGrayColor]CGColor]];
         
-        
+        [button1 setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
         button1.titleLabel.font = [UIFont fontWithName:@"STHeitiTC-Light" size:_fontSize] ;
         [self.view addSubview: button1] ;
         [button1 addTarget:self action:@selector(run:) forControlEvents:UIControlEventTouchUpInside] ;
     }
     
     //添加 “=” 号 EqualSign
-    UIButton *buttonEqualSign = [UIButton buttonWithType:UIButtonTypeRoundedRect] ;
+    UIButton *buttonEqualSign = [UIButton buttonWithType:UIButtonTypeCustom] ;
     [buttonEqualSign setFrame:CGRectMake(ButtonWidth*3, ResultLabelRectHeight+ButtonRectHeight/5*4,ButtonWidth, ButtonHeight)] ;
     [buttonEqualSign setTitle:@"＝" forState:UIControlStateNormal] ;
     [buttonEqualSign setBackgroundImage:[UIImage imageNamed:@"keypad_button_colored_background"] forState:UIControlStateNormal];
@@ -194,8 +256,7 @@
     UIButton * buttonClean = [UIButton buttonWithType:UIButtonTypeRoundedRect] ;
     [buttonClean setFrame:CGRectMake(0, ResultLabelRectHeight, ButtonWidth, ButtonHeight)] ;
     [buttonClean setTitle:@"AC" forState:UIControlStateNormal] ;
-    [buttonClean setTintColor:[UIColor blackColor]];
-    [buttonClean setBackgroundColor:[UIColor clearColor]];
+    [buttonClean setTintColor:[UIColor whiteColor]];
     
     [buttonClean.layer setMasksToBounds:YES];
     [buttonClean.layer setCornerRadius:.0];
@@ -223,21 +284,50 @@
     [self.view addSubview:buttonBack] ;
     
     //添加“+/-”按钮
-    UIButton *button3 = [UIButton buttonWithType:UIButtonTypeCustom];
+    UIButton *button3 = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [button3 setFrame:CGRectMake(ButtonWidth*2, ResultLabelRectHeight, ButtonWidth, ButtonHeight)];
-    [button3 setImage:[UIImage imageNamed:@"iTunesArtwork"] forState:UIControlStateNormal];
+    [button3 setTitle:@"±" forState:UIControlStateNormal];
+    [button3 setTintColor:[UIColor whiteColor]];
     
     
-    self.string = [[NSMutableString alloc]init] ;
-    self.str = [[NSString alloc]init];
+    [button3.layer setMasksToBounds:YES];
+    [button3.layer setCornerRadius:.0];
+    [button3.layer setBorderWidth:.5];
+    [button3.layer setBorderColor:[[UIColor grayColor]CGColor]];
+    
+    [button3.layer setMasksToBounds:YES];
+    [button3.layer setBorderWidth:.5];
+    [button3.layer setBorderColor:[[UIColor grayColor]CGColor]];
+
+    button3.titleLabel.font = [UIFont fontWithName:@"STHeitiTC-Light" size:_fontSize];
+    [button3 addTarget:self action:@selector(overTern:) forControlEvents:UIControlStateNormal];
+    [self.view addSubview:button3];
+    
+    
+    //添加“%” 按钮
+    UIButton *buttonPercent = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [buttonPercent setFrame:CGRectMake(ButtonWidth*1, ResultLabelRectHeight, ButtonWidth, ButtonHeight)];
+    [buttonPercent setTitle:@"％" forState:UIControlStateNormal];
+    [buttonPercent setTintColor:[UIColor whiteColor]];
+
+    
+    [buttonPercent.layer setMasksToBounds:YES];
+    [buttonPercent.layer setCornerRadius:.0];
+    [buttonPercent.layer setBorderWidth:.5];
+    [buttonPercent.layer setBorderColor:[[UIColor grayColor]CGColor]];
+    
+    [buttonPercent.layer setMasksToBounds:YES];
+    [buttonPercent.layer setBorderWidth:.5];
+    [buttonPercent.layer setBorderColor:[[UIColor grayColor]CGColor]];
+    
+    buttonPercent.titleLabel.font = [UIFont fontWithName:@"STHeitiTC-Light" size:_fontSize];
+    [buttonPercent addTarget:self action:@selector(percent:) forControlEvents:UIControlStateNormal];
+    [self.view addSubview:buttonPercent];
+    //以上完成UI搭建
+   
     
 }
 
--(void)shuzi:(id)sender
-{
-    
-    
-}
 
 
 - (void)didReceiveMemoryWarning {
