@@ -57,15 +57,15 @@
 
 -(void) run:(id)sender
 {
-    if ([_charcterStr isEqualToString:@""])
+    if ([_characterStr isEqualToString:@""])
     {
         _num2 = _num1;
         NSLog(@"self.num2 is %f",_num2);
         _label.text = [NSString stringWithString:_string];
         [_string setString:@""];
-        _charcterStr = [sender currentTitle];
+        _characterStr = [sender currentTitle];
         
-        NSLog(@"%@",_charcterStr);
+        NSLog(@"%@",_characterStr);
         
         
         
@@ -78,7 +78,7 @@
 
     //初始化可变字符串，分配内存
     self.string=[NSMutableString stringWithCapacity:10];
-    self.charcterStr = [[NSString alloc]init];
+    self.characterStr = [[NSString alloc]init];
     
 
     
