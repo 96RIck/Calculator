@@ -42,6 +42,9 @@
 
 -(void)numZero:(id)sender
 {
+    if ([_labelOperators.text isEqualToString:@" = "]) {
+        return;
+    }
     
     
     [_display appendString:[sender currentTitle]];
@@ -62,14 +65,19 @@
 
 -(void)point:(id)sender
 {
+    if ([_labelOperators.text isEqualToString:@" = "]) {
+        return;
+    }
     
     [_display appendString:[sender currentTitle]];
     
+    NSLog(@"point aaaaaa%@",_display);
     if ([_display isEqualToString:@"."]) {
         [_display setString:@"0."];
         self.labelResult.text = @"0.";
         havePoint = YES;
         _leftNum = [_display doubleValue];
+        NSLog(@"point bbbbb%@",_display);
     }
     else if (havePoint)
     {
@@ -152,17 +160,59 @@
     
     if ([_haveChar isEqualToString:@""])
     {
+       
+        if ([_labelResult.text isEqualToString:@"0"] && ![_labelOperators.text isEqualToString:@""]) {
+            _labelOperators.text = [sender currentTitle];
+            
+            return;
+        }
         if ([_display isEqualToString:@""]) {
             return;
         }
         _haveChar = [sender currentTitle];
-        _rightNum = _leftNum;
-        NSLog(@"self.num2 is %f",_rightNum);
+        if(isFinish == YES)
+        {
+            _leftNum = _resultNum;
+            NSLog(@"leftnum %f",_leftNum);
+            NSLog(@"resutlnum%f",_resultNum);
+            [_display setString:@""];
+            
+            _lengthString = [NSString stringWithFormat:@"%f", _resultNum];
+            
+            _length = [_lengthString length];
+            for(int i = 0; i<=5; i++)
+            {
+                NSString *subString = [_lengthString substringFromIndex:_length - i];
+                if([subString isEqualToString:@"0"])
+                {
+                    _lengthString = [_lengthString substringToIndex:_length - i];
+                }
+                
+            }
+            _labelDisplay.text = [NSString stringWithString:_lengthString];
+            
+            _rightNum = _leftNum;
+             [_display setString:@""];
+            _labelOperators.text = [sender currentTitle];
+            _labelResult.text = @"0";
+            isFinish = NO;
+            if ([_labelResult.text isEqualToString:@"0"] && ![_labelOperators.text isEqualToString:@""]) {
+                
+                _haveChar = @"";
+                
+                return;
+            }
+        }
+        else
+        {
+            _rightNum = _leftNum;
+            NSLog(@"self.num2 is %f",_rightNum);
         
-        _labelDisplay.text = [NSString stringWithString:_display];
-        [_display setString:@""];
-        _labelOperators.text = [sender currentTitle];
-        _labelResult.text = @"0";
+            _labelDisplay.text = [NSString stringWithString:_display];
+            [_display setString:@""];
+            _labelOperators.text = [sender currentTitle];
+            _labelResult.text = @"0";
+        }
         
     }
     else if([_display isEqualToString:@"0"] && ![_haveChar isEqualToString:@""])
@@ -171,6 +221,11 @@
         {
             _haveChar = @"";
         }
+    }
+    
+    else if (![_display isEqualToString:@""] && ![_labelOperators.text isEqualToString:@""] )
+    {
+        return;
     }
     else
     {
@@ -269,7 +324,14 @@
         if ([[sender currentTitle] isEqualToString:@"÷"])
         {
             
-            if ([_display isEqualToString:@"0"] | [_display isEqualToString:@"0."]) {
+            
+            /*
+             if ([_display isEqualToString:@"0"] | [_display isEqualToString:@"0."] | ([_labelResult.text isEqualToString:@"0"] && ![_labelOperators.text isEqualToString:@""]) | [_haveChar isEqualToString:@"÷"]) {
+             _haveChar = [sender currentTitle];
+             return;
+             */
+            
+            if ([_labelResult.text isEqualToString:@"0"] | [_labelResult.text isEqualToString:@"0."] ) {
                 _haveChar = @"÷";
             }
             else
@@ -311,9 +373,11 @@
 
 -(void)run:(id)sender
 {
-    if ([_haveChar isEqualToString:@""])
+    _haveChar = _labelOperators.text;
+    
+    if ([_haveChar isEqualToString:@""] | [_haveChar isEqualToString:@" = "])
     {
-        
+        _haveChar = @"";
     }
     else if (![_haveChar isEqualToString:@""])
     {
@@ -417,6 +481,7 @@
     _labelOperators.text = @"";
     _labelResult.text = @"0";
     _haveChar = @"";
+    havePoint = NO;
 }
 
 
