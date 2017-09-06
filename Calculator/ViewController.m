@@ -39,7 +39,7 @@
     _leftNum = [_display doubleValue];
     NSLog(@"self.num1 is %f",self.resultNum) ;
 }
-
+//按下数字0
 -(void)numZero:(id)sender
 {
     if ([_labelOperators.text isEqualToString:@" = "]) {
@@ -62,7 +62,7 @@
     self.resultNum = [self.labelResult.text doubleValue];
     NSLog(@"self.num1 is %f",self.resultNum) ;
 }
-
+//按下数字点.
 -(void)point:(id)sender
 {
     if ([_labelOperators.text isEqualToString:@" = "]) {
@@ -97,62 +97,7 @@
     self.resultNum  = [self.labelResult.text doubleValue];
     NSLog(@"self.num1 is %f",self.resultNum) ;
 }
-/*
- //＋－×÷
- -(void)operators:(id)sender
- {
- 
- havePoint = NO;
- 
- 
- 
- if (!isFirstInput)
- {
- _labelOperators.text = [sender currentTitle];
- _leftNum = [_display doubleValue];
- _labelDisplay.text = [NSString stringWithString:_display];
- [_display setString:@""];
- self.labelResult.text = @"0";
- NSLog(@"self.num1 is %f",self.resultNum) ;
- isleftNum = YES;
- isFirstInput = YES;
- _haveChar = [sender currentTitle];
- }
- 
- 
- if ([[sender currentTitle] isEqualToString:@"＋"]) {
- 
- _labelOperators.text = [sender currentTitle];
- _rightNum = [_display doubleValue];
- _labelDisplay.text = [NSString stringWithString:_display];
- [_display setString:@""];
- _resultNum = _leftNum + _rightNum;
- self.labelDisplay.text = [NSString stringWithFormat:@"%.9f",_resultNum];
- NSLog(@"self.num1 is %f",self.resultNum) ;
- _leftNum = 0;
- _resultNum = 0;
- isleftNum = NO;
- }
- else if ([[sender currentTitle] isEqualToString:@"－"])
- {
- isMinus = YES;
- }
- else if ([[sender currentTitle] isEqualToString:@"×"])
- {
- isMultiply = YES;
- }
- else if ([[sender currentTitle] isEqualToString:@"÷"])
- {
- isDivide = YES ;
- }
- 
- 
- 
- }
- */
-
-
-
+//按下运算按钮（＋－×÷）
 -(void) operators:(id)sender
 {
     havePoint = NO;
@@ -367,10 +312,7 @@
         
     }
 }
-
-
-
-
+//按下等于号（ = ）
 -(void)run:(id)sender
 {
     _haveChar = _labelOperators.text;
@@ -468,7 +410,7 @@
         isFinish = YES;
     }
 }
-
+//按下AC键
 -(void)clean:(id)sender
 {
     _lengthString = @"";
@@ -485,6 +427,9 @@
 }
 
 
+
+
+//UI及其他工具
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -600,7 +545,7 @@
     
     //添加数字 ”0“
     UIButton *button0 = [UIButton buttonWithType:UIButtonTypeCustom];
-    button0.frame = CGRectMake(ButtonWidth, ResultLabelRectHeight+ButtonRectHeight/5*4, ButtonWidth, ButtonHeight);
+    button0.frame = CGRectMake(0, ResultLabelRectHeight+ButtonRectHeight/5*4, ButtonWidth*2, ButtonHeight);
     
     //设置字体
     button0.titleLabel.font = [UIFont fontWithName:@"STHeitiTC-Light" size:_fontSize];
@@ -623,7 +568,7 @@
     
     //添加 “.” 小数点
     UIButton *buttonPoint = [UIButton buttonWithType:UIButtonTypeCustom] ;
-    [buttonPoint setFrame:CGRectMake(0, ResultLabelRectHeight+ButtonRectHeight/5*4, ButtonWidth, ButtonHeight)];
+    [buttonPoint setFrame:CGRectMake(ButtonWidth*2, ResultLabelRectHeight+ButtonRectHeight/5*4, ButtonWidth, ButtonHeight)];
     [buttonPoint setBackgroundImage:[UIImage imageNamed:@"keypad_button_darker_background"] forState:UIControlStateNormal];
     [buttonPoint setTitle:@"." forState:UIControlStateNormal] ;
     [buttonPoint setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
@@ -701,9 +646,9 @@
     
     //添加“back”按钮
     UIButton *buttonBack = [UIButton buttonWithType:UIButtonTypeCustom] ;
-    [buttonBack setFrame:CGRectMake(ButtonWidth*2, ResultLabelRectHeight+ButtonHeight*4, ButtonWidth, ButtonHeight)] ;
-    [buttonBack setImage:[UIImage imageNamed:@"erase_symbol"]forState:UIControlStateNormal];
-    [buttonBack setBackgroundImage:[UIImage imageNamed:@"keypad_button_darker_background"] forState:UIControlStateNormal];
+    [buttonBack setFrame:CGRectMake(ButtonWidth*2, ResultLabelRectHeight, ButtonWidth, ButtonHeight)] ;
+    [buttonBack setImage:[UIImage imageNamed:@"退格"]forState:UIControlStateNormal];
+   // [buttonBack setBackgroundImage:[UIImage imageNamed:@"keypad_button_darker_background"] forState:UIControlStateNormal];
     [buttonBack setTintColor:[UIColor blackColor]];
     
     [buttonBack.layer setMasksToBounds:YES];
@@ -716,7 +661,7 @@
     
     //添加“+/-”按钮
     UIButton *button3 = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [button3 setFrame:CGRectMake(ButtonWidth*2, ResultLabelRectHeight, ButtonWidth, ButtonHeight)];
+    [button3 setFrame:CGRectMake(ButtonWidth, ResultLabelRectHeight, ButtonWidth, ButtonHeight)];
     [button3 setTitle:@"±" forState:UIControlStateNormal];
     [button3 setTintColor:[UIColor whiteColor]];
     
@@ -735,31 +680,7 @@
     [self.view addSubview:button3];
     
     
-    //添加“%” 按钮
-    UIButton *buttonPercent = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [buttonPercent setFrame:CGRectMake(ButtonWidth*1, ResultLabelRectHeight, ButtonWidth, ButtonHeight)];
-    [buttonPercent setTitle:@"％" forState:UIControlStateNormal];
-    [buttonPercent setTintColor:[UIColor whiteColor]];
-    
-    
-    [buttonPercent.layer setMasksToBounds:YES];
-    [buttonPercent.layer setCornerRadius:.0];
-    [buttonPercent.layer setBorderWidth:.5];
-    [buttonPercent.layer setBorderColor:[[UIColor grayColor]CGColor]];
-    
-    [buttonPercent.layer setMasksToBounds:YES];
-    [buttonPercent.layer setBorderWidth:.5];
-    [buttonPercent.layer setBorderColor:[[UIColor grayColor]CGColor]];
-    
-    buttonPercent.titleLabel.font = [UIFont fontWithName:@"STHeitiTC-Light" size:_fontSize];
-    [buttonPercent addTarget:self action:@selector(percent:) forControlEvents:UIControlStateNormal];
-    [self.view addSubview:buttonPercent];
     //以上完成UI搭建
-    
-    
-    
-    
-    
 }
 
 
