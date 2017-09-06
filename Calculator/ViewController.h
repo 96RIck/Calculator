@@ -19,12 +19,13 @@
     BOOL isrightNum;
     BOOL havePoint;
     BOOL isOperate;
+    BOOL isFinish;
     BOOL isFirstInput;
     BOOL isSecondInput;
 }
 @property(nonatomic,retain) UIButton *button ;
 @property(nonatomic,assign) int fontSize;
-@property(nonatomic,assign) int length;
+@property(nonatomic,assign) NSInteger length;
 @property(nonatomic,retain) UILabel *labelResult ;
 @property(nonatomic,retain) UILabel *labelOperators ;
 @property(nonatomic,retain) UILabel *labelDisplay ;

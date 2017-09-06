@@ -29,6 +29,10 @@
 //设置按下数字方法
 -(void)num:(id)sender
 {
+    if ([_labelOperators.text isEqualToString:@" = "]) {
+        [_display setString:@""];
+        _labelOperators .text = @"";
+    }
     [_display appendString:[sender currentTitle]];
     self.labelResult.text = [NSString stringWithString:_display];
     self.resultNum = [self.labelResult.text doubleValue];
@@ -78,6 +82,9 @@
     }
     // havePoint = NO;
     _leftNum = [_display doubleValue];
+    
+    NSLog(@"%@",_display);
+    // [_display appendString:[sender currentTitle]];
     self.labelResult.text = [NSString stringWithString:_display];
     self.resultNum  = [self.labelResult.text doubleValue];
     NSLog(@"self.num1 is %f",self.resultNum) ;
@@ -140,9 +147,14 @@
 
 -(void) operators:(id)sender
 {
+    havePoint = NO;
+    NSLog(@"chara%@",_haveChar);
     
     if ([_haveChar isEqualToString:@""])
     {
+        if ([_display isEqualToString:@""]) {
+            return;
+        }
         _haveChar = [sender currentTitle];
         _rightNum = _leftNum;
         NSLog(@"self.num2 is %f",_rightNum);
@@ -153,8 +165,19 @@
         _labelResult.text = @"0";
         
     }
+    else if([_display isEqualToString:@"0"] && ![_haveChar isEqualToString:@""])
+    {
+        if ([_haveChar isEqualToString:@"＋"] | [_haveChar isEqualToString:@"－"] | [_haveChar isEqualToString:@"×"] | [_haveChar isEqualToString:@"÷"] )
+        {
+            _haveChar = @"";
+        }
+    }
     else
     {
+        
+        
+        
+        
         if ([[sender currentTitle] isEqualToString:@"＋"]) {
             _haveChar = [sender currentTitle];
             //把新输入的_string加入到_num1中
@@ -183,7 +206,217 @@
             _leftNum = 0;
             [_labelDisplay setText:_lengthString];
         }
+        
+        if ([[sender currentTitle] isEqualToString:@"－"]) {
+            _haveChar = [sender currentTitle];
+            //把新输入的_string加入到_num1中
+            _leftNum = [_labelResult.text doubleValue];
+            //计算结果Num3
+            _resultNum = _rightNum -_leftNum ;
+            _rightNum = _resultNum ;
+            NSLog(@"aaaaa%f",_resultNum);
+            
+            _lengthString = [NSString stringWithFormat:@"%f", _rightNum];
+            
+            _length = [_lengthString length];
+            for(int i = 0; i<=5; i++)
+            {
+                NSString *subString = [_lengthString substringFromIndex:_length - i];
+                if([subString isEqualToString:@"0"])
+                {
+                    _lengthString = [_lengthString substringToIndex:_length - i];
+                }
+                
+            }
+            
+            [_display setString:@""];
+            _labelOperators.text = [sender currentTitle];
+            _labelResult.text = @"0";
+            _leftNum = 0;
+            [_labelDisplay setText:_lengthString];
+        }
+        
+        if ([[sender currentTitle] isEqualToString:@"×"]) {
+            NSLog(@"%@",_haveChar);
+            _haveChar = [sender currentTitle];
+            //把新输入的_string加入到_num1中
+            _leftNum = [_labelResult.text doubleValue];
+            //计算结果Num3
+            _resultNum = _rightNum *_leftNum ;
+            _rightNum = _resultNum ;
+            NSLog(@"aaaaa%f",_resultNum);
+            
+            _lengthString = [NSString stringWithFormat:@"%f", _rightNum];
+            
+            _length = [_lengthString length];
+            for(int i = 0; i<=5; i++)
+            {
+                NSString *subString = [_lengthString substringFromIndex:_length - i];
+                if([subString isEqualToString:@"0"])
+                {
+                    _lengthString = [_lengthString substringToIndex:_length - i];
+                }
+                
+            }
+            
+            [_display setString:@""];
+            _labelOperators.text = [sender currentTitle];
+            _labelResult.text = @"0";
+            _leftNum = 0;
+            [_labelDisplay setText:_lengthString];
+        }
+        
+        if ([[sender currentTitle] isEqualToString:@"÷"])
+        {
+            
+            if ([_display isEqualToString:@"0"] | [_display isEqualToString:@"0."]) {
+                _haveChar = @"÷";
+            }
+            else
+            {
+                _haveChar = [sender currentTitle];
+                //把新输入的_string加入到_num1中
+                _leftNum = [_labelResult.text doubleValue];
+                //计算结果Num3
+                _resultNum = _rightNum / _leftNum ;
+                _rightNum = _resultNum ;
+                NSLog(@"aaaaa%f",_resultNum);
+                
+                _lengthString = [NSString stringWithFormat:@"%f", _rightNum];
+                
+                _length = [_lengthString length];
+                for(int i = 0; i<=5; i++)
+                {
+                    NSString *subString = [_lengthString substringFromIndex:_length - i];
+                    if([subString isEqualToString:@"0"])
+                    {
+                        _lengthString = [_lengthString substringToIndex:_length - i];
+                    }
+                    
+                }
+                
+                [_display setString:@""];
+                _labelOperators.text = [sender currentTitle];
+                _labelResult.text = @"0";
+                _leftNum = 0;
+                [_labelDisplay setText:_lengthString];
+            }
+        }
+        
     }
+}
+
+
+
+
+-(void)run:(id)sender
+{
+    if ([_haveChar isEqualToString:@""])
+    {
+        
+    }
+    else if (![_haveChar isEqualToString:@""])
+    {
+        if ([_haveChar isEqualToString:@"÷"]) {
+            _leftNum = [_labelResult.text doubleValue];
+            //计算结果Num3
+            _resultNum = _rightNum / _leftNum ;
+            _rightNum = _resultNum ;
+            NSLog(@"aaaaa%f",_resultNum);
+            _lengthString = [NSString stringWithFormat:@"%f", _resultNum];
+            _length = [_lengthString length];
+            for(int i = 0; i<=5; i++)
+            {
+                NSString *subString = [_lengthString substringFromIndex:_length - i];
+                if([subString isEqualToString:@"0"])
+                {
+                    _lengthString = [_lengthString substringToIndex:_length - i];
+                }
+                
+            }
+            _haveChar = @"";
+            _labelResult.text = [NSString stringWithString: _lengthString];
+        }else if ([_haveChar isEqualToString:@"＋"])
+        {
+            _leftNum = [_labelResult.text doubleValue];
+            //计算结果Num3
+            _resultNum = _rightNum + _leftNum ;
+            _rightNum = _resultNum ;
+            NSLog(@"aaaaa%f",_resultNum);
+            _lengthString = [NSString stringWithFormat:@"%f", _resultNum];
+            _length = [_lengthString length];
+            for(int i = 0; i<=5; i++)
+            {
+                NSString *subString = [_lengthString substringFromIndex:_length - i];
+                if([subString isEqualToString:@"0"])
+                {
+                    _lengthString = [_lengthString substringToIndex:_length - i];
+                }
+                
+            }
+            _haveChar = @"";
+            _labelResult.text = [NSString stringWithString: _lengthString];
+        }else if ([_haveChar isEqualToString:@"－"])
+        {
+            _leftNum = [_labelResult.text doubleValue];
+            //计算结果Num3
+            _resultNum = _rightNum - _leftNum ;
+            _rightNum = _resultNum ;
+            NSLog(@"aaaaa%f",_resultNum);
+            _lengthString = [NSString stringWithFormat:@"%f", _resultNum];
+            _length = [_lengthString length];
+            for(int i = 0; i<=5; i++)
+            {
+                NSString *subString = [_lengthString substringFromIndex:_length - i];
+                if([subString isEqualToString:@"0"])
+                {
+                    _lengthString = [_lengthString substringToIndex:_length - i];
+                }
+                
+            }
+            _haveChar = @"";
+            _labelResult.text = [NSString stringWithString: _lengthString];
+        }
+        else if ([_haveChar isEqualToString:@"×"])
+        {
+            _leftNum = [_labelResult.text doubleValue];
+            //计算结果Num3
+            _resultNum = _rightNum * _leftNum ;
+            _rightNum = _resultNum ;
+            NSLog(@"aaaaa%f",_resultNum);
+            _lengthString = [NSString stringWithFormat:@"%f", _resultNum];
+            _length = [_lengthString length];
+            for(int i = 0; i<=5; i++)
+            {
+                NSString *subString = [_lengthString substringFromIndex:_length - i];
+                if([subString isEqualToString:@"0"])
+                {
+                    _lengthString = [_lengthString substringToIndex:_length - i];
+                }
+                
+            }
+            _haveChar = @"";
+            _labelResult.text = [NSString stringWithString: _lengthString];
+        }
+        _labelOperators.text = @" = ";
+        _labelDisplay.text = @"";
+        
+        isFinish = YES;
+    }
+}
+
+-(void)clean:(id)sender
+{
+    _lengthString = @"";
+    _resultNum = 0;
+    _rightNum = 0;
+    _leftNum = 0;
+    _length = 0;
+    [_display setString:@""];
+    _labelDisplay.text = @"";
+    _labelOperators.text = @"";
+    _labelResult.text = @"0";
+    _haveChar = @"";
 }
 
 
@@ -192,7 +425,7 @@
     
     //初始化可变字符串，分配内存
     self.display=[NSMutableString stringWithCapacity:10];
-    
+    _haveChar = @"";
     
     
     //MARK1 : -总体UI搭建和相关设置
