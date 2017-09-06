@@ -18,87 +18,153 @@
 
 @interface ViewController ()
 
+
+
 @end
 
 @implementation ViewController
 
-//设置按下数字方法
--(void)shuzi:(id)sender
-{
-    [self.string appendString:[sender currentTitle]];       //数字追加到string
-    
-    //初始化ResultString
-    _resultString = _string;
-   
-    
-    
-    
-    
-//MARK: -控制输入数字时“.”的出现次数为1次。检测到点的个数超过一个时，删除掉最后一个
 
-    if (notAppendPoint == YES)
-    {
-        
-        
-        if ([[sender currentTitle] isEqualToString:@"."])   //判断最新追加的字符是为“.”
-        {
-            if ([_label1.text isEqualToString:@"0"] | [_label1.text isEqualToString:@"0."] | [_string isEqualToString:@"."])        //判断是否直接追加各位为0的小数
-            {
-                //如果直接输入小数点，则显示0.
-                [_string setString:@"0."];
-            }
-            else if ((_num1 == 0) && [_label1.text isEqualToString:@"."])
-            {
-                NSRange deleteRange = {[_string length] -1,1};  //创建deleteRange
-                [_string deleteCharactersInRange:deleteRange];//将NSMutaleString多余添加的"."删除
-            }
-            
-            havePoint = YES;
-        }
-    }
-    
-    if ([[sender currentTitle] isEqualToString:@"."]) //判断输入的字符是否为"."
-    {
-        NSString *str1 = @".";
-        [_resultString stringByAppendingString:str1];
-        notAppendPoint = YES;                                      //将不在追加“.”
-    }
-    
-    //打印bool值 NSLog(@"appendPoint value: %@" ,notAppendPoint?@"YES":@"NO");
-    //显示数值
-    NSLog(@"AAAAAAA%@",_string);
-    self.label1.text = [NSString stringWithString:_resultString];
-    self.num1 = [self.label1.text doubleValue];
-    NSLog(@"self.num1 is %Lf",self.num1) ;
-    
+
+//设置按下数字方法
+-(void)num:(id)sender
+{
+    [_display appendString:[sender currentTitle]];
+    self.labelResult.text = [NSString stringWithString:_display];
+    self.resultNum = [self.labelResult.text doubleValue];
+    _leftNum = [_display doubleValue];
+    NSLog(@"self.num1 is %f",self.resultNum) ;
 }
 
--(void) run:(id)sender
+-(void)numZero:(id)sender
 {
-    if ([_characterStr isEqualToString:@""])
+    
+    
+    [_display appendString:[sender currentTitle]];
+    
+    if ([_display isEqualToString:@"0"]) {
+        [_display setString:@""];
+        self.labelResult.text = @"0";
+    }
+    else
     {
-        _characterStr = [sender currentTitle];
-        _num2 = _num1;
-        NSLog(@"self.num2 is %Lf",_num2);
+        self.labelResult.text = [NSString stringWithString:_display];
+    }
+    
+    _leftNum = [_display doubleValue];
+    self.resultNum = [self.labelResult.text doubleValue];
+    NSLog(@"self.num1 is %f",self.resultNum) ;
+}
+
+-(void)point:(id)sender
+{
+    
+    [_display appendString:[sender currentTitle]];
+    
+    if ([_display isEqualToString:@"."]) {
+        [_display setString:@"0."];
+        self.labelResult.text = @"0.";
+        havePoint = YES;
+        _leftNum = [_display doubleValue];
+    }
+    else if (havePoint)
+    {
+        NSRange deleteRange = {[_display length] -1,1};  //创建deleteRange
+        [_display deleteCharactersInRange:deleteRange];
+    }
+    else
+    {
+        havePoint = YES;
+    }
+    // havePoint = NO;
+    _leftNum = [_display doubleValue];
+    self.labelResult.text = [NSString stringWithString:_display];
+    self.resultNum  = [self.labelResult.text doubleValue];
+    NSLog(@"self.num1 is %f",self.resultNum) ;
+}
+/*
+ //＋－×÷
+ -(void)operators:(id)sender
+ {
+ 
+ havePoint = NO;
+ 
+ 
+ 
+ if (!isFirstInput)
+ {
+ _labelOperators.text = [sender currentTitle];
+ _leftNum = [_display doubleValue];
+ _labelDisplay.text = [NSString stringWithString:_display];
+ [_display setString:@""];
+ self.labelResult.text = @"0";
+ NSLog(@"self.num1 is %f",self.resultNum) ;
+ isleftNum = YES;
+ isFirstInput = YES;
+ _haveChar = [sender currentTitle];
+ }
+ 
+ 
+ if ([[sender currentTitle] isEqualToString:@"＋"]) {
+ 
+ _labelOperators.text = [sender currentTitle];
+ _rightNum = [_display doubleValue];
+ _labelDisplay.text = [NSString stringWithString:_display];
+ [_display setString:@""];
+ _resultNum = _leftNum + _rightNum;
+ self.labelDisplay.text = [NSString stringWithFormat:@"%.9f",_resultNum];
+ NSLog(@"self.num1 is %f",self.resultNum) ;
+ _leftNum = 0;
+ _resultNum = 0;
+ isleftNum = NO;
+ }
+ else if ([[sender currentTitle] isEqualToString:@"－"])
+ {
+ isMinus = YES;
+ }
+ else if ([[sender currentTitle] isEqualToString:@"×"])
+ {
+ isMultiply = YES;
+ }
+ else if ([[sender currentTitle] isEqualToString:@"÷"])
+ {
+ isDivide = YES ;
+ }
+ 
+ 
+ 
+ }
+ */
+
+
+
+-(void) operators:(id)sender
+{
+    
+    if ([_haveChar isEqualToString:@""])
+    {
+        _haveChar = [sender currentTitle];
+        _rightNum = _leftNum;
+        NSLog(@"self.num2 is %f",_rightNum);
         
-        _label2.text = [NSString stringWithString:_string];
-        [_string setString:@""];
-        _label3.text = [sender currentTitle];
-        _label1.text = @"0";
+        _labelDisplay.text = [NSString stringWithString:_display];
+        [_display setString:@""];
+        _labelOperators.text = [sender currentTitle];
+        _labelResult.text = @"0";
         
     }
     else
     {
-        if ([_characterStr isEqualToString:@"＋"]) {
-            _characterStr = [sender currentTitle];
+        if ([[sender currentTitle] isEqualToString:@"＋"]) {
+            _haveChar = [sender currentTitle];
             //把新输入的_string加入到_num1中
-            _num1 = [_label1.text doubleValue];
+            _leftNum = [_labelResult.text doubleValue];
             //计算结果Num3
-            _num3 = _num2 +_num1 ;
-            _num2 = _num3 ;
-            NSLog(@"aaaaa%Lf",_num3);
+            _resultNum = _rightNum +_leftNum ;
+            _rightNum = _resultNum ;
+            NSLog(@"aaaaa%f",_resultNum);
             
-            _lengthString = [NSString stringWithFormat:@"%Lf", _num3];
+            _lengthString = [NSString stringWithFormat:@"%f", _rightNum];
             
             _length = [_lengthString length];
             for(int i = 0; i<=5; i++)
@@ -111,11 +177,11 @@
                 
             }
             
-            [_string setString:@""];
-            _label3.text = [sender currentTitle];
-            _label1.text = @"0";
-            _num1 = 0;
-            [_label2 setText:_lengthString];
+            [_display setString:@""];
+            _labelOperators.text = [sender currentTitle];
+            _labelResult.text = @"0";
+            _leftNum = 0;
+            [_labelDisplay setText:_lengthString];
         }
     }
 }
@@ -123,14 +189,13 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
+    
     //初始化可变字符串，分配内存
-    self.string=[NSMutableString stringWithCapacity:10];
-    self.characterStr = [[NSString alloc]init];
+    self.display=[NSMutableString stringWithCapacity:10];
     
-
     
-//MARK1 : -总体UI搭建和相关设置
+    
+    //MARK1 : -总体UI搭建和相关设置
     
     //设置按钮区域总宽高，显示label总宽高，单个按钮宽高
     float ButtonWidth = MainScreenWidth/4;
@@ -145,7 +210,7 @@
     CGSize size = rect.size;
     _DeviceScreenWidth = size.width;
     _DeviceScreenHeight = size.height;
-
+    
     NSString * DeviceVersion ;
     
     //判断机型，设置全局Button字体
@@ -169,44 +234,41 @@
         DeviceVersion = @"IPhone6P/7P" ;
         _fontSize = 40 ;
     }
- 
+    
     self.view.backgroundColor = [UIColor blackColor];
     
     UILabel *labelRect = [[UILabel alloc]initWithFrame:CGRectMake(0, ResultLabelRectHeight, ButtonWidth*3, ButtonHeight)];
     labelRect.backgroundColor = [UIColor darkGrayColor];
     [self.view addSubview:labelRect];
     
-    NSLog(@"appendPoint value: %@" ,notAppendPoint?@"YES":@"NO");
-
     
     //搭建UI
     
     //创建ResultLabel1
-    self.label1 = [[UILabel alloc]initWithFrame:CGRectMake(0, ResultLabelRectHeight/2, ResultLabelRectWidth-20, ResultLabelRectHeight/2)] ;
-    [self.view addSubview:_label1] ;
-    self.label1.backgroundColor = [UIColor blackColor] ;
-    self.label1.textColor = [UIColor whiteColor] ;
-    self.label1.textAlignment = NSTextAlignmentRight;
-    self.label1.font = [UIFont systemFontOfSize:_fontSize] ;
-    self.label1.text = @"0";
+    self.labelResult = [[UILabel alloc]initWithFrame:CGRectMake(0, ResultLabelRectHeight/2, ResultLabelRectWidth-20, ResultLabelRectHeight/2)] ;
+    [self.view addSubview:_labelResult] ;
+    self.labelResult.backgroundColor = [UIColor blackColor] ;
+    self.labelResult.textColor = [UIColor whiteColor] ;
+    self.labelResult.textAlignment = NSTextAlignmentRight;
+    self.labelResult.font = [UIFont systemFontOfSize:_fontSize] ;
+    self.labelResult.text = @"0";
+    
+    //创建ResultlabelDisplay
+    _labelDisplay = [[UILabel alloc]initWithFrame:CGRectMake(0, 30, ResultLabelRectWidth-20, ResultLabelRectHeight/2)];
+    [self.view addSubview:_labelDisplay];
+    self.labelDisplay.backgroundColor = [UIColor blackColor] ;
+    self.labelDisplay.textColor = [UIColor whiteColor] ;
+    self.labelDisplay.textAlignment = NSTextAlignmentRight;
+    self.labelDisplay.font = [UIFont systemFontOfSize:_fontSize-15] ;
     
     
-    //创建ResultLabel2
-    _label2 = [[UILabel alloc]initWithFrame:CGRectMake(0, 30, ResultLabelRectWidth-20, ResultLabelRectHeight/2)];
-    [self.view addSubview:_label2];
-    self.label2.backgroundColor = [UIColor blackColor] ;
-    self.label2.textColor = [UIColor whiteColor] ;
-    self.label2.textAlignment = NSTextAlignmentRight;
-    self.label2.font = [UIFont systemFontOfSize:_fontSize-15] ;
-    
-    
-    //创建ResultLabel3
-    _label3 = [[UILabel alloc]initWithFrame:CGRectMake(0, ButtonWidth+30, ButtonWidth/2, ButtonHeight-30)];
-    [self.view addSubview:_label3];
-    self.label3.backgroundColor = [UIColor blackColor] ;
-    self.label3.textColor = [UIColor whiteColor] ;
-    self.label3.textAlignment = NSTextAlignmentCenter;
-    self.label3.font = [UIFont systemFontOfSize:_fontSize-6] ;
+    //创建ResultlabelOperators
+    _labelOperators = [[UILabel alloc]initWithFrame:CGRectMake(0, ButtonWidth+30, ButtonWidth/2, ButtonHeight-30)];
+    [self.view addSubview:_labelOperators];
+    self.labelOperators.backgroundColor = [UIColor blackColor] ;
+    self.labelOperators.textColor = [UIColor whiteColor] ;
+    self.labelOperators.textAlignment = NSTextAlignmentCenter;
+    self.labelOperators.font = [UIFont systemFontOfSize:_fontSize-6] ;
     
     //添加1-9数字
     NSArray * array = [NSArray arrayWithObjects:@"1",@"2",@"3",@"4",@"5",@"6",@"7",@"8",@"9", nil] ;
@@ -221,7 +283,7 @@
             [self.button setTitle:[array objectAtIndex:n++] forState:UIControlStateNormal] ;
             [self.button setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
             [self.button setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
-         
+            
             //设置字体
             self.button.titleLabel.font = [UIFont fontWithName:@"STHeitiTC-Light" size:_fontSize];
             
@@ -230,9 +292,10 @@
             self.button.layer.cornerRadius = 0.0 ;
             self.button.layer.borderWidth = 0.5 ;
             self.button.layer.borderColor = [[UIColor darkGrayColor]CGColor];
+            self.button.tag = n;
             
             [self.view addSubview:_button] ;
-            [self.button addTarget:self action:@selector(shuzi:) forControlEvents:UIControlEventTouchUpInside] ;
+            [self.button addTarget:self action:@selector(num:) forControlEvents:UIControlEventTouchUpInside] ;
         }
     }
     
@@ -241,10 +304,10 @@
     UIButton *button0 = [UIButton buttonWithType:UIButtonTypeCustom];
     button0.frame = CGRectMake(ButtonWidth, ResultLabelRectHeight+ButtonRectHeight/5*4, ButtonWidth, ButtonHeight);
     
-        //设置字体
+    //设置字体
     button0.titleLabel.font = [UIFont fontWithName:@"STHeitiTC-Light" size:_fontSize];
     
-        //设置按钮边框
+    //设置按钮边框
     [button0.layer setMasksToBounds:YES];
     button0.layer.cornerRadius = 0.0;
     button0.layer.borderWidth = 0.5;
@@ -254,8 +317,9 @@
     [button0 setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
     [button0 setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
     
+    button0.tag = 0;
     [button0 setBackgroundImage:[UIImage imageNamed:@"keypad_button_darker_background"] forState:UIControlStateNormal];
-    [button0 addTarget:self action:@selector(shuzi:) forControlEvents:UIControlEventTouchUpInside] ;
+    [button0 addTarget:self action:@selector(numZero:) forControlEvents:UIControlEventTouchUpInside] ;
     [self.view addSubview:button0] ;
     
     
@@ -269,14 +333,16 @@
     
     buttonPoint.titleLabel.font = [UIFont fontWithName:@"STHeitiTC-Light" size:_fontSize];
     
+    buttonPoint.tag = 10;
+    
     [buttonPoint.layer setMasksToBounds:YES];
     buttonPoint.layer.borderWidth = 0.5;
     [buttonPoint.layer setBorderColor:[[UIColor darkGrayColor]CGColor]] ;
     
     
-    [buttonPoint addTarget:self action:@selector(shuzi:) forControlEvents:UIControlEventTouchUpInside] ;
+    [buttonPoint addTarget:self action:@selector(point:) forControlEvents:UIControlEventTouchUpInside] ;
     [self.view addSubview:buttonPoint] ;
-
+    
     
     
     //添加运算符：
@@ -298,7 +364,7 @@
         [button1 setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
         button1.titleLabel.font = [UIFont fontWithName:@"STHeitiTC-Light" size:_fontSize] ;
         [self.view addSubview: button1] ;
-        [button1 addTarget:self action:@selector(run:) forControlEvents:UIControlEventTouchUpInside] ;
+        [button1 addTarget:self action:@selector(operators:) forControlEvents:UIControlEventTouchUpInside] ;
     }
     
     //添加 “=” 号 EqualSign
@@ -346,7 +412,7 @@
     [buttonBack.layer setCornerRadius:.0];
     [buttonBack.layer setBorderWidth:.5];
     [buttonBack.layer setBorderColor:[[UIColor grayColor]CGColor]];
-     
+    
     [buttonBack addTarget:self action:@selector(back:) forControlEvents:UIControlEventTouchUpInside] ;
     [self.view addSubview:buttonBack] ;
     
@@ -365,7 +431,7 @@
     [button3.layer setMasksToBounds:YES];
     [button3.layer setBorderWidth:.5];
     [button3.layer setBorderColor:[[UIColor grayColor]CGColor]];
-
+    
     button3.titleLabel.font = [UIFont fontWithName:@"STHeitiTC-Light" size:_fontSize];
     [button3 addTarget:self action:@selector(overTern:) forControlEvents:UIControlStateNormal];
     [self.view addSubview:button3];
@@ -376,7 +442,7 @@
     [buttonPercent setFrame:CGRectMake(ButtonWidth*1, ResultLabelRectHeight, ButtonWidth, ButtonHeight)];
     [buttonPercent setTitle:@"％" forState:UIControlStateNormal];
     [buttonPercent setTintColor:[UIColor whiteColor]];
-
+    
     
     [buttonPercent.layer setMasksToBounds:YES];
     [buttonPercent.layer setCornerRadius:.0];
@@ -391,7 +457,10 @@
     [buttonPercent addTarget:self action:@selector(percent:) forControlEvents:UIControlStateNormal];
     [self.view addSubview:buttonPercent];
     //以上完成UI搭建
-   
+    
+    
+    
+    
     
 }
 
