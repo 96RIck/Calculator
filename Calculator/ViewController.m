@@ -26,10 +26,10 @@
 
 
 
-//设置按下数字方法
+//按下数字1~9事件
 -(void)num:(id)sender
 {
-    if ([_labelOperators.text isEqualToString:@" = "]) {
+    if ([_labelOperators.text isEqualToString:@"="]) {
         [_display setString:@""];
         _labelOperators .text = @"";
         _lengthString = @"";
@@ -50,10 +50,10 @@
     _leftNum = [_display doubleValue];
     NSLog(@"self.num1 is %f",self.resultNum) ;
 }
-//按下数字0
+//按下数字0事件
 -(void)numZero:(id)sender
 {
-    if ([_labelOperators.text isEqualToString:@" = "]) {
+    if ([_labelOperators.text isEqualToString:@"="]) {
         return;
     }
     
@@ -73,22 +73,20 @@
     self.resultNum = [self.labelResult.text doubleValue];
     NSLog(@"self.num1 is %f",self.resultNum) ;
 }
-//按下数字点.
+//按下数字点.事件
 -(void)point:(id)sender
 {
-    if ([_labelOperators.text isEqualToString:@" = "]) {
+    if ([_labelOperators.text isEqualToString:@"="]) {
         return;
     }
     
     [_display appendString:[sender currentTitle]];
     
-    NSLog(@"point aaaaaa%@",_display);
     if ([_display isEqualToString:@"."]) {
         [_display setString:@"0."];
         self.labelResult.text = @"0.";
         havePoint = YES;
         _leftNum = [_display doubleValue];
-        NSLog(@"point bbbbb%@",_display);
     }
     else if (havePoint)
     {
@@ -102,15 +100,19 @@
     // havePoint = NO;
     _leftNum = [_display doubleValue];
     
-    NSLog(@"%@",_display);
+    NSLog(@"point%@",_display);
     // [_display appendString:[sender currentTitle]];
     self.labelResult.text = [NSString stringWithString:_display];
     self.resultNum  = [self.labelResult.text doubleValue];
     NSLog(@"self.num1 is %f",self.resultNum) ;
 }
-//按下运算按钮（＋－×÷）
+//按下运算按钮（＋ － × ÷ ）事件
 -(void) operators:(id)sender
 {
+    if (![_labelResult.text isEqualToString:@""] && ![_labelOperators.text isEqualToString:@""] && ![_labelDisplay.text isEqualToString:@""])
+    {
+        
+    
     
     if (isFinish ==YES && ![_labelDisplay.text isEqualToString:@""]) {
         return;
@@ -120,9 +122,13 @@
         _haveChar = @"";
         return;
     }
-    
+        _haveChar = [sender currentTitle];
+        _labelOperators.text = _haveChar;
+        _haveChar = @"";
     havePoint = NO;
     NSLog(@"chara%@",_haveChar);
+        return;
+    }
     
     if ([_haveChar isEqualToString:@""])
     {
@@ -345,12 +351,17 @@
         
     }
 }
-//按下等于号（ = ）
+//按下等于号（ = ）事件
 -(void)run:(id)sender
 {
     _haveChar = _labelOperators.text;
+    if ([_labelResult.text isEqualToString:@"0"] && ![_labelOperators.text isEqualToString:@""] && ![_labelDisplay.text isEqualToString:@""]) {
+        _haveChar = @"";
+        
+        return;
+    }
     
-    if ([_haveChar isEqualToString:@""] | [_haveChar isEqualToString:@" = "])
+    if ([_haveChar isEqualToString:@""] | [_haveChar isEqualToString:@"="])
     {
         _haveChar = @"";
     }
@@ -437,13 +448,13 @@
             _haveChar = @"";
             _labelResult.text = [NSString stringWithString: _lengthString];
         }
-        _labelOperators.text = @" = ";
+        _labelOperators.text = @"=";
         _labelDisplay.text = @"";
         
         isFinish = YES;
     }
 }
-//按下AC键
+//按下AC键事件
 -(void)clean:(id)sender
 {
     _lengthString = @"";
@@ -458,8 +469,68 @@
     _haveChar = @"";
     havePoint = NO;
 }
+//按下（back）事件
+-(void)back:(id)sender
+{
+    if ([_labelOperators.text isEqualToString:@""] && [_labelResult.text isEqualToString:@"0"] )
+    {
+        NSLog(@" asdfas");
+        [_display setString:@""];
+        _haveChar = @"";
+        havePoint = NO;
+        
+        return;
+    }
+    else if ([_labelOperators.text isEqualToString:@"="])
+    {
+        _lengthString = @"";
+        _resultNum = 0;
+        _rightNum = 0;
+        _leftNum = 0;
+        _length = 0;
+        [_display setString:@""];
+        _labelDisplay.text = @"";
+        _labelOperators.text = @"";
+        _labelResult.text = @"0";
+        _haveChar = @"";
+        havePoint = NO;
+    }
+    else if([_labelResult.text isEqualToString:@"0."])
+    {
+        [_display setString:@""];
+        _labelResult.text = @"0";
+        havePoint = NO;
+    }
+    else
+    {
+        
+    
+        if (![_labelResult.text isEqualToString:@"0"])
+        {
+            if (_display.length == 1)
+            {
+                [_display setString:@""];
+                _labelResult.text = @"0";
+                havePoint = NO;
+                return;
+            }
+        
+            else if (![_labelResult.text isEqualToString:@"0"]) {
+                NSRange deleteRange = { [_display length] - 1, 1 };
+                [_display deleteCharactersInRange:deleteRange];
+                NSLog(@"%lu",(unsigned long)_display.length);
+            }
+            _labelResult.text = _display;
+            NSLog(@"aaaaa%@",_display);
 
-
+        }
+    }
+}
+//按下 （±）事件
+-(void)overTern:(id)sender
+{
+    
+}
 
 
 //UI及其他工具
@@ -467,9 +538,18 @@
     [super viewDidLoad];
     
     //初始化可变字符串，分配内存
-    self.display=[NSMutableString stringWithCapacity:10];
+    self.display=[NSMutableString stringWithCapacity:20];
     _haveChar = @"";
-    
+    _lengthString = @"";
+    _resultNum = 0;
+    _rightNum = 0;
+    _leftNum = 0;
+    _length = 0;
+    [_display setString:@""];
+    _labelDisplay.text = @"";
+    _labelOperators.text = @"";
+    _labelResult.text = @"0";
+    havePoint = NO;
     
     //MARK1 : -总体UI搭建和相关设置
     
@@ -536,16 +616,16 @@
     self.labelDisplay.textColor = [UIColor whiteColor] ;
     self.labelDisplay.textAlignment = NSTextAlignmentRight;
     self.labelDisplay.font = [UIFont systemFontOfSize:_fontSize-15] ;
-    
+    self.labelDisplay.text = @"";
     
     //创建ResultlabelOperators
-    _labelOperators = [[UILabel alloc]initWithFrame:CGRectMake(0, ButtonWidth+30, ButtonWidth/2, ButtonHeight-30)];
+    _labelOperators = [[UILabel alloc]initWithFrame:CGRectMake(0, ButtonHeight+30, ButtonWidth/2, ButtonHeight-30)];
     [self.view addSubview:_labelOperators];
     self.labelOperators.backgroundColor = [UIColor blackColor] ;
     self.labelOperators.textColor = [UIColor whiteColor] ;
     self.labelOperators.textAlignment = NSTextAlignmentCenter;
     self.labelOperators.font = [UIFont systemFontOfSize:_fontSize-6] ;
-    
+    self.labelOperators.text = @"";
     //添加1-9数字
     NSArray * array = [NSArray arrayWithObjects:@"1",@"2",@"3",@"4",@"5",@"6",@"7",@"8",@"9", nil] ;
     int n = 0 ;
