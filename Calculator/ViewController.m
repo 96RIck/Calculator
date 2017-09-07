@@ -54,8 +54,12 @@
 -(void)numZero:(id)sender
 {
     if ([_labelOperators.text isEqualToString:@"="]) {
+        _labelOperators.text = @"";
+        _labelResult.text = @"0";
+        [_display setString:@""];
         return;
     }
+    
     
     
     [_display appendString:[sender currentTitle]];
@@ -77,6 +81,9 @@
 -(void)point:(id)sender
 {
     if ([_labelOperators.text isEqualToString:@"="]) {
+        _labelOperators.text = @"";
+        _labelResult.text = @"0";
+        [_display setString:@""];
         return;
     }
     
@@ -162,6 +169,14 @@
                 }
                 
             }
+            //当结尾是.0时删除.0变成整数
+            if ([_lengthString hasSuffix:@"0"])
+            {
+                _lengthString = [_lengthString substringToIndex:[_lengthString length] - 2];
+                if ([_lengthString hasSuffix:@"."]) {
+                    _lengthString = [_lengthString substringToIndex:[_lengthString length] - 2];
+                }
+            }
             _labelDisplay.text = [NSString stringWithString:_lengthString];
             
             _rightNum = _leftNum;
@@ -239,7 +254,14 @@
                 }
                 
             }
-            
+            //当结尾是.0时删除.0变成整数
+            if ([_lengthString hasSuffix:@"0"])
+            {
+                _lengthString = [_lengthString substringToIndex:[_lengthString length] - 2];
+                if ([_lengthString hasSuffix:@"."]) {
+                    _lengthString = [_lengthString substringToIndex:[_lengthString length] - 2];
+                }
+            }
             [_display setString:@""];
             _labelOperators.text = [sender currentTitle];
             _labelResult.text = @"0";
@@ -268,7 +290,14 @@
                 }
                 
             }
-            
+            //当结尾是.0时删除.0变成整数
+            if ([_lengthString hasSuffix:@"0"])
+            {
+                _lengthString = [_lengthString substringToIndex:[_lengthString length] - 2];
+                if ([_lengthString hasSuffix:@"."]) {
+                    _lengthString = [_lengthString substringToIndex:[_lengthString length] - 2];
+                }
+            }
             [_display setString:@""];
             _labelOperators.text = [sender currentTitle];
             _labelResult.text = @"0";
@@ -298,7 +327,14 @@
                 }
                 
             }
-            
+            //当结尾是.0时删除.0变成整数
+            if ([_lengthString hasSuffix:@"0"])
+            {
+                _lengthString = [_lengthString substringToIndex:[_lengthString length] - 2];
+                if ([_lengthString hasSuffix:@"."]) {
+                    _lengthString = [_lengthString substringToIndex:[_lengthString length] - 2];
+                }
+            }
             [_display setString:@""];
             _labelOperators.text = [sender currentTitle];
             _labelResult.text = @"0";
@@ -341,7 +377,14 @@
                     }
                     
                 }
-                
+                //当结尾是.0时删除.0变成整数
+                if ([_lengthString hasSuffix:@"0"])
+                {
+                    _lengthString = [_lengthString substringToIndex:[_lengthString length] - 2];
+                    if ([_lengthString hasSuffix:@"."]) {
+                        _lengthString = [_lengthString substringToIndex:[_lengthString length] - 2];
+                    }
+                }
                 [_display setString:@""];
                 _labelOperators.text = [sender currentTitle];
                 _labelResult.text = @"0";
@@ -363,35 +406,16 @@
         return;
     }
     
-    if ([_haveChar isEqualToString:@""] | [_haveChar isEqualToString:@"="])
+    if ([_haveChar isEqualToString:@"="]) //[_haveChar isEqualToString:@""] |
     {
         _haveChar = @"";
     }
     else if (![_haveChar isEqualToString:@""])
     {
-        if ([_haveChar isEqualToString:@"÷"]) {
+        if ([_haveChar isEqualToString:@"＋"]) {
             _leftNum = [_labelResult.text doubleValue];
             //计算结果Num3
-            _resultNum = _rightNum / _leftNum ;
-            _rightNum = _resultNum ;
-            NSLog(@"aaaaa%f",_resultNum);
-            _lengthString = [NSString stringWithFormat:@"%f", _resultNum];
-            _length = [_lengthString length];
-            for(int i = 0; i<=5; i++)
-            {
-                NSString *subString = [_lengthString substringFromIndex:_length - i];
-                if([subString isEqualToString:@"0"])
-                {
-                    _lengthString = [_lengthString substringToIndex:_length - i];
-                }
-                
-            }
-            _haveChar = @"";
-            _labelResult.text = [NSString stringWithString: _lengthString];
-        }else if ([_haveChar isEqualToString:@"＋"])
-        {
-            _leftNum = [_labelResult.text doubleValue];
-            //计算结果Num3
+            _rightNum = [_labelDisplay.text doubleValue];
             _resultNum = _rightNum + _leftNum ;
             _rightNum = _resultNum ;
             NSLog(@"aaaaa%f",_resultNum);
@@ -406,12 +430,21 @@
                 }
                 
             }
+            //当结尾是.0时删除.0变成整数
+            if ([_lengthString hasSuffix:@"0"])
+            {
+                _lengthString = [_lengthString substringToIndex:[_lengthString length] - 2];
+                if ([_lengthString hasSuffix:@"."]) {
+                    _lengthString = [_lengthString substringToIndex:[_lengthString length] - 2];
+                }
+            }
             _haveChar = @"";
             _labelResult.text = [NSString stringWithString: _lengthString];
         }else if ([_haveChar isEqualToString:@"－"])
         {
             _leftNum = [_labelResult.text doubleValue];
             //计算结果Num3
+            _rightNum = [_labelDisplay.text doubleValue];
             _resultNum = _rightNum - _leftNum ;
             _rightNum = _resultNum ;
             NSLog(@"aaaaa%f",_resultNum);
@@ -426,13 +459,21 @@
                 }
                 
             }
+            //当结尾是.0时删除.0变成整数
+            if ([_lengthString hasSuffix:@"0"])
+            {
+                _lengthString = [_lengthString substringToIndex:[_lengthString length] - 2];
+                if ([_lengthString hasSuffix:@"."]) {
+                    _lengthString = [_lengthString substringToIndex:[_lengthString length] - 2];
+                }
+            }
             _haveChar = @"";
             _labelResult.text = [NSString stringWithString: _lengthString];
-        }
-        else if ([_haveChar isEqualToString:@"×"])
+        }else if ([_haveChar isEqualToString:@"×"])
         {
             _leftNum = [_labelResult.text doubleValue];
             //计算结果Num3
+            _rightNum = [_labelDisplay.text doubleValue];
             _resultNum = _rightNum * _leftNum ;
             _rightNum = _resultNum ;
             NSLog(@"aaaaa%f",_resultNum);
@@ -446,6 +487,44 @@
                     _lengthString = [_lengthString substringToIndex:_length - i];
                 }
                 
+            }
+            //当结尾是.0时删除.0变成整数
+            if ([_lengthString hasSuffix:@"0"])
+            {
+                _lengthString = [_lengthString substringToIndex:[_lengthString length] - 2];
+                if ([_lengthString hasSuffix:@"."]) {
+                    _lengthString = [_lengthString substringToIndex:[_lengthString length] - 2];
+                }
+            }
+            _haveChar = @"";
+            _labelResult.text = [NSString stringWithString: _lengthString];
+        }
+        else if ([_haveChar isEqualToString:@"÷"])
+        {
+            _leftNum = [_labelResult.text doubleValue];
+            //计算结果Num3
+            _rightNum = [_labelDisplay.text doubleValue];
+            _resultNum = _rightNum / _leftNum ;
+            _rightNum = _resultNum ;
+            NSLog(@"aaaaa%f",_resultNum);
+            _lengthString = [NSString stringWithFormat:@"%f", _resultNum];
+            _length = [_lengthString length];
+            for(int i = 0; i<=5; i++)
+            {
+                NSString *subString = [_lengthString substringFromIndex:_length - i];
+                if([subString isEqualToString:@"0"])
+                {
+                    _lengthString = [_lengthString substringToIndex:_length - i];
+                }
+                
+            }
+            //当结尾是.0时删除.0变成整数
+            if ([_lengthString hasSuffix:@"0"])
+            {
+                _lengthString = [_lengthString substringToIndex:[_lengthString length] - 2];
+                if ([_lengthString hasSuffix:@"."]) {
+                    _lengthString = [_lengthString substringToIndex:[_lengthString length] - 2];
+                }
             }
             _haveChar = @"";
             _labelResult.text = [NSString stringWithString: _lengthString];
@@ -543,6 +622,10 @@
     
     _overTurnNum =  fabs(_overTurnNum);
     
+    if([_labelResult.text isEqualToString:@"0"]&&[_labelDisplay.text isEqualToString:@""]&&[_labelOperators.text isEqualToString:@""])
+    {
+        return;
+    }
     
     if (isMinus) {
         _resultNum += _overTurnNum;
@@ -559,8 +642,20 @@
             }
             
         }
+        if ([_lengthString hasSuffix:@"0"])
+        {
+           _lengthString = [_lengthString substringToIndex:[_lengthString length] - 2];
+            if ([_lengthString hasSuffix:@"."]) {
+                _lengthString = [_lengthString substringToIndex:[_lengthString length] - 2];
+            }
+        }
         _labelResult.text = _lengthString;
         [_display setString:_lengthString];
+    }
+    else if(![_labelOperators.text isEqualToString:@""] && [_labelResult.text isEqualToString:@"0"])
+    {
+        return;
+        
     }
     else
     {
@@ -578,7 +673,18 @@
             }
             
         }
+        
+        //当结尾是.0时删除.0变成整数
+        if ([_lengthString hasSuffix:@"0"])
+        {
+            _lengthString = [_lengthString substringToIndex:[_lengthString length] - 2];
+            if ([_lengthString hasSuffix:@"."]) {
+                _lengthString = [_lengthString substringToIndex:[_lengthString length] - 2];
+            }
+        }
+        //显示结果
         _labelResult.text = _lengthString;
+        //输入值清零
         [_display setString:_lengthString];
     }
 }
