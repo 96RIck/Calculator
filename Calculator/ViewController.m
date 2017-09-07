@@ -32,6 +32,17 @@
     if ([_labelOperators.text isEqualToString:@" = "]) {
         [_display setString:@""];
         _labelOperators .text = @"";
+        _lengthString = @"";
+        _resultNum = 0;
+        _rightNum = 0;
+        _leftNum = 0;
+        _length = 0;
+        [_display setString:@""];
+        _labelDisplay.text = @"";
+        _labelOperators.text = @"";
+        _labelResult.text = @"0";
+        _haveChar = @"";
+        havePoint = NO;
     }
     [_display appendString:[sender currentTitle]];
     self.labelResult.text = [NSString stringWithString:_display];
@@ -100,6 +111,16 @@
 //按下运算按钮（＋－×÷）
 -(void) operators:(id)sender
 {
+    
+    if (isFinish ==YES && ![_labelDisplay.text isEqualToString:@""]) {
+        return;
+    }
+    if ([_labelOperators.text isEqualToString:@"－"] && [[sender currentTitle]  isEqual: @"×"]) {
+        _labelOperators.text = [NSString stringWithString:[sender currentTitle]];
+        _haveChar = @"";
+        return;
+    }
+    
     havePoint = NO;
     NSLog(@"chara%@",_haveChar);
     
@@ -140,6 +161,17 @@
              [_display setString:@""];
             _labelOperators.text = [sender currentTitle];
             _labelResult.text = @"0";
+            
+            _lengthString = @"";
+            _leftNum = 0;
+            _length = 0;
+            [_display setString:@""];
+            
+            
+            
+            
+            havePoint = NO;
+            
             isFinish = NO;
             if ([_labelResult.text isEqualToString:@"0"] && ![_labelOperators.text isEqualToString:@""]) {
                 
@@ -170,6 +202,7 @@
     
     else if (![_display isEqualToString:@""] && ![_labelOperators.text isEqualToString:@""] )
     {
+        
         return;
     }
     else
@@ -647,7 +680,7 @@
     //添加“back”按钮
     UIButton *buttonBack = [UIButton buttonWithType:UIButtonTypeCustom] ;
     [buttonBack setFrame:CGRectMake(ButtonWidth*2, ResultLabelRectHeight, ButtonWidth, ButtonHeight)] ;
-    [buttonBack setImage:[UIImage imageNamed:@"退格"]forState:UIControlStateNormal];
+    [buttonBack setImage:[UIImage imageNamed:@"back"]forState:UIControlStateNormal];
    // [buttonBack setBackgroundImage:[UIImage imageNamed:@"keypad_button_darker_background"] forState:UIControlStateNormal];
     [buttonBack setTintColor:[UIColor blackColor]];
     
