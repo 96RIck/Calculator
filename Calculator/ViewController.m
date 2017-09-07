@@ -109,6 +109,7 @@
 //按下运算按钮（＋ － × ÷ ）事件
 -(void) operators:(id)sender
 {
+    isMinus = NO;
     if (![_labelResult.text isEqualToString:@""] && ![_labelOperators.text isEqualToString:@""] && ![_labelDisplay.text isEqualToString:@""])
     {
         
@@ -354,6 +355,7 @@
 //按下等于号（ = ）事件
 -(void)run:(id)sender
 {
+    isMinus = NO;
     _haveChar = _labelOperators.text;
     if ([_labelResult.text isEqualToString:@"0"] && ![_labelOperators.text isEqualToString:@""] && ![_labelDisplay.text isEqualToString:@""]) {
         _haveChar = @"";
@@ -457,6 +459,7 @@
 //按下AC键事件
 -(void)clean:(id)sender
 {
+    isMinus = NO;
     _lengthString = @"";
     _resultNum = 0;
     _rightNum = 0;
@@ -472,6 +475,7 @@
 //按下（back）事件
 -(void)back:(id)sender
 {
+    isMinus = NO;
     if ([_labelOperators.text isEqualToString:@""] && [_labelResult.text isEqualToString:@"0"] )
     {
         NSLog(@" asdfas");
@@ -529,7 +533,54 @@
 //按下 （±）事件
 -(void)overTern:(id)sender
 {
+    NSLog(@"  %@",_display);
+    if ([_labelOperators.text isEqualToString:@"="]) {
+        return;
+    }
+    _resultNum = [_labelResult.text doubleValue];
     
+    _overTurnNum = _resultNum*2;
+    
+    _overTurnNum =  fabs(_overTurnNum);
+    
+    
+    if (isMinus) {
+        _resultNum += _overTurnNum;
+        isMinus = !isMinus;
+        
+        _lengthString = [NSString stringWithFormat:@"%f", _resultNum];
+        _length = [_lengthString length];
+        for(int i = 0; i<=5; i++)
+        {
+            NSString *subString = [_lengthString substringFromIndex:_length - i];
+            if([subString isEqualToString:@"0"])
+            {
+                _lengthString = [_lengthString substringToIndex:_length - i];
+            }
+            
+        }
+        _labelResult.text = _lengthString;
+        [_display setString:_lengthString];
+    }
+    else
+    {
+        _resultNum -= _overTurnNum;
+        isMinus = !isMinus;
+
+        _lengthString = [NSString stringWithFormat:@"%f", _resultNum];
+        _length = [_lengthString length];
+        for(int i = 0; i<=5; i++)
+        {
+            NSString *subString = [_lengthString substringFromIndex:_length - i];
+            if([subString isEqualToString:@"0"])
+            {
+                _lengthString = [_lengthString substringToIndex:_length - i];
+            }
+            
+        }
+        _labelResult.text = _lengthString;
+        [_display setString:_lengthString];
+    }
 }
 
 
@@ -789,7 +840,7 @@
     [button3.layer setBorderColor:[[UIColor grayColor]CGColor]];
     
     button3.titleLabel.font = [UIFont fontWithName:@"STHeitiTC-Light" size:_fontSize];
-    [button3 addTarget:self action:@selector(overTern:) forControlEvents:UIControlStateNormal];
+    [button3 addTarget:self action:@selector(overTern:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:button3];
     
     

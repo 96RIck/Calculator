@@ -22,6 +22,7 @@
     BOOL isFinish;
     BOOL isFirstInput;
     BOOL isSecondInput;
+  
 }
 @property(nonatomic,retain) UIButton *button ;
 @property(nonatomic,assign) int fontSize;
@@ -38,7 +39,7 @@
 @property(nonatomic,assign) double leftNum;
 @property(nonatomic,assign) double rightNum;
 @property(nonatomic,assign) double resultNum;
-@property(nonatomic,assign) double numDisplay;
+@property(nonatomic,assign) double overTurnNum;
 
 @property(nonatomic,retain) NSArray *numbers;
 @property(nonatomic,retain) NSArray *Operators;
