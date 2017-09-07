@@ -80,6 +80,9 @@
 //按下数字点.事件
 -(void)point:(id)sender
 {
+    
+    
+    
     if ([_labelOperators.text isEqualToString:@"="]) {
         _labelOperators.text = @"";
         _labelResult.text = @"0";
@@ -88,17 +91,25 @@
     }
     
     [_display appendString:[sender currentTitle]];
-    
+    NSLog(@"asdfasdf%@",_display);
     if ([_display isEqualToString:@"."]) {
         [_display setString:@"0."];
         self.labelResult.text = @"0.";
         havePoint = YES;
         _leftNum = [_display doubleValue];
     }
+  
     else if (havePoint)
     {
-        NSRange deleteRange = {[_display length] -1,1};  //创建deleteRange
-        [_display deleteCharactersInRange:deleteRange];
+        NSLog(@"aaaawwwwww");
+        //判断LR显示字符串是否是Double类型
+        NSScanner* scan = [NSScanner scannerWithString:_labelResult.text];
+        float val;
+        if([scan scanFloat:&val] && [scan isAtEnd])
+        {
+            NSRange deleteRange = {[_display length] -1,1};  //创建deleteRange
+            [_display deleteCharactersInRange:deleteRange];
+        }
     }
     else
     {
@@ -108,7 +119,6 @@
     _leftNum = [_display doubleValue];
     
     NSLog(@"point%@",_display);
-    // [_display appendString:[sender currentTitle]];
     self.labelResult.text = [NSString stringWithString:_display];
     self.resultNum  = [self.labelResult.text doubleValue];
     NSLog(@"self.num1 is %f",self.resultNum) ;
@@ -133,7 +143,7 @@
         _haveChar = [sender currentTitle];
         _labelOperators.text = _haveChar;
         _haveChar = @"";
-    havePoint = NO;
+  //  havePoint = NO;
     NSLog(@"chara%@",_haveChar);
         return;
     }
@@ -192,7 +202,7 @@
             
             
             
-            havePoint = NO;
+  //          havePoint = NO;
             
             isFinish = NO;
             if ([_labelResult.text isEqualToString:@"0"] && ![_labelOperators.text isEqualToString:@""]) {
@@ -612,7 +622,8 @@
 //按下 （±）事件
 -(void)overTern:(id)sender
 {
-    NSLog(@"  %@",_display);
+    havePoint = NO;
+    NSLog(@" kai %@",_display);
     if ([_labelOperators.text isEqualToString:@"="]) {
         return;
     }
@@ -624,6 +635,13 @@
     
     if([_labelResult.text isEqualToString:@"0"]&&[_labelDisplay.text isEqualToString:@""]&&[_labelOperators.text isEqualToString:@""])
     {
+        //判断LR显示字符串是否是Double类型
+        NSScanner* scan = [NSScanner scannerWithString:_labelResult.text];
+        float val;
+        if([scan scanFloat:&val] && [scan isAtEnd])
+        {
+            havePoint = NO;
+        }
         return;
     }
     
@@ -642,6 +660,14 @@
             }
             
         }
+        NSLog(@"asdfa1fsdfdfv%@",_lengthString);
+        NSScanner* scan = [NSScanner scannerWithString:_lengthString];
+        float val;
+        if([scan scanFloat:&val] && [scan isAtEnd])
+        {
+            havePoint = YES;
+        }
+        
         if ([_lengthString hasSuffix:@"0"])
         {
            _lengthString = [_lengthString substringToIndex:[_lengthString length] - 2];
@@ -649,11 +675,20 @@
                 _lengthString = [_lengthString substringToIndex:[_lengthString length] - 2];
             }
         }
+        
         _labelResult.text = _lengthString;
         [_display setString:_lengthString];
     }
     else if(![_labelOperators.text isEqualToString:@""] && [_labelResult.text isEqualToString:@"0"])
     {
+        //判断LR显示字符串是否是Double类型
+        NSLog(@"asdfasdfawwwww%@",_display);
+        NSScanner* scan = [NSScanner scannerWithString:_labelResult.text];
+        float val;
+        if([scan scanFloat:&val] && [scan isAtEnd])
+        {
+            havePoint = NO;
+        }
         return;
         
     }
@@ -684,9 +719,21 @@
         }
         //显示结果
         _labelResult.text = _lengthString;
+        
         //输入值清零
         [_display setString:_lengthString];
+        
+        
+        //判断LR显示字符串是否是Double类型
+        NSScanner* scan = [NSScanner scannerWithString:_labelResult.text];
+        float val;
+        if([scan scanFloat:&val] && [scan isAtEnd])
+        {
+            havePoint = YES;
+        }
     }
+    NSLog(@"_labelResult.text %@",_labelResult.text);
+     NSLog(@" wer %@",_display);
 }
 
 
