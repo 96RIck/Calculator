@@ -48,7 +48,6 @@
     self.labelResult.text = [NSString stringWithString:_display];
     self.resultNum = [self.labelResult.text doubleValue];
     _leftNum = [_display doubleValue];
-    NSLog(@"self.num1 is %f",self.resultNum) ;
 }
 //按下数字0事件
 -(void)numZero:(id)sender
@@ -59,9 +58,6 @@
         [_display setString:@""];
         return;
     }
-    
-    
-    
     [_display appendString:[sender currentTitle]];
     
     if ([_display isEqualToString:@"0"]) {
@@ -72,10 +68,8 @@
     {
         self.labelResult.text = [NSString stringWithString:_display];
     }
-    
     _leftNum = [_display doubleValue];
     self.resultNum = [self.labelResult.text doubleValue];
-    NSLog(@"self.num1 is %f",self.resultNum) ;
 }
 //按下数字点.事件
 -(void)point:(id)sender
@@ -87,8 +81,6 @@
     {
         havePoint = NO;
     }
-    
-    
     if ([_labelOperators.text isEqualToString:@"="]) {
         _labelOperators.text = @"";
         _labelResult.text = @"0";
@@ -97,7 +89,7 @@
     }
     
     [_display appendString:[sender currentTitle]];
-    NSLog(@"asdfasdf%@",_display);
+    
     if ([_display isEqualToString:@"."]) {
         [_display setString:@"0."];
         self.labelResult.text = @"0.";
@@ -110,27 +102,23 @@
            [_display deleteCharactersInRange:deleteRange];
     }
    
-    // havePoint = NO;
     _leftNum = [_labelResult.text doubleValue];
-    
-    NSLog(@"point%@",_display);
     self.labelResult.text = [NSString stringWithString:_display];
     self.resultNum  = [self.labelResult.text doubleValue];
-    NSLog(@"self.num1 is %f",self.resultNum) ;
+
 }
 //按下运算按钮（＋ － × ÷ ）事件
 -(void) operators:(id)sender
 {
-    isMinus = NO;
+ 
     if (![_labelResult.text isEqualToString:@""] && ![_labelOperators.text isEqualToString:@""] && ![_labelDisplay.text isEqualToString:@""])
     {
-        
-    
-    
-    if (isFinish ==YES && ![_labelDisplay.text isEqualToString:@""]) {
+    if (isFinish ==YES && ![_labelDisplay.text isEqualToString:@""])
+    {
         return;
     }
-    if ([_labelOperators.text isEqualToString:@"－"] && [[sender currentTitle]  isEqual: @"×"]) {
+    if ([_labelOperators.text isEqualToString:@"－"] && [[sender currentTitle]  isEqual: @"×"])
+    {
         _labelOperators.text = [NSString stringWithString:[sender currentTitle]];
         _haveChar = @"";
         return;
@@ -138,8 +126,6 @@
         _haveChar = [sender currentTitle];
         _labelOperators.text = _haveChar;
         _haveChar = @"";
-  //  havePoint = NO;
-    NSLog(@"chara%@",_haveChar);
         return;
     }
     
@@ -158,12 +144,8 @@
         if(isFinish == YES)
         {
             _leftNum = _resultNum;
-            NSLog(@"leftnum %f",_leftNum);
-            NSLog(@"resutlnum%f",_resultNum);
             [_display setString:@""];
-            
             _lengthString = [NSString stringWithFormat:@"%f", _resultNum];
-            
             _length = [_lengthString length];
             for(int i = 0; i<=5; i++)
             {
@@ -178,46 +160,37 @@
             if ([_lengthString hasSuffix:@"0"])
             {
                 _lengthString = [_lengthString substringToIndex:[_lengthString length] - 2];
-                if ([_lengthString hasSuffix:@"."]) {
+                if ([_lengthString hasSuffix:@"."])
+                {
                     _lengthString = [_lengthString substringToIndex:[_lengthString length] - 2];
                 }
             }
             _labelDisplay.text = [NSString stringWithString:_lengthString];
-            
             _rightNum = _leftNum;
              [_display setString:@""];
             _labelOperators.text = [sender currentTitle];
             _labelResult.text = @"0";
-            
             _lengthString = @"";
             _leftNum = 0;
             _length = 0;
             [_display setString:@""];
-            
-            
-            
-            
-  //          havePoint = NO;
-            
+
             isFinish = NO;
-            if ([_labelResult.text isEqualToString:@"0"] && ![_labelOperators.text isEqualToString:@""]) {
-                
+            
+            if ([_labelResult.text isEqualToString:@"0"] && ![_labelOperators.text isEqualToString:@""])
+            {
                 _haveChar = @"";
-                
                 return;
             }
         }
         else
         {
             _rightNum = _leftNum;
-            NSLog(@"self.num2 is %f",_rightNum);
-        
             _labelDisplay.text = [NSString stringWithString:_display];
             [_display setString:@""];
             _labelOperators.text = [sender currentTitle];
             _labelResult.text = @"0";
         }
-        
     }
     else if([_display isEqualToString:@"0"] && ![_haveChar isEqualToString:@""])
     {
@@ -226,18 +199,12 @@
             _haveChar = @"";
         }
     }
-    
     else if (![_display isEqualToString:@""] && ![_labelOperators.text isEqualToString:@""] )
     {
-        
         return;
     }
     else
     {
-        
-        
-        
-        
         if ([[sender currentTitle] isEqualToString:@"＋"]) {
             _haveChar = [sender currentTitle];
             //把新输入的_string加入到_num1中
@@ -245,10 +212,7 @@
             //计算结果Num3
             _resultNum = _rightNum +_leftNum ;
             _rightNum = _resultNum ;
-            NSLog(@"aaaaa%f",_resultNum);
-            
             _lengthString = [NSString stringWithFormat:@"%f", _rightNum];
-            
             _length = [_lengthString length];
             for(int i = 0; i<=5; i++)
             {
@@ -257,7 +221,6 @@
                 {
                     _lengthString = [_lengthString substringToIndex:_length - i];
                 }
-                
             }
             //当结尾是.0时删除.0变成整数
             if ([_lengthString hasSuffix:@"0"])
@@ -281,10 +244,7 @@
             //计算结果Num3
             _resultNum = _rightNum -_leftNum ;
             _rightNum = _resultNum ;
-            NSLog(@"aaaaa%f",_resultNum);
-            
             _lengthString = [NSString stringWithFormat:@"%f", _rightNum];
-            
             _length = [_lengthString length];
             for(int i = 0; i<=5; i++)
             {
@@ -293,7 +253,6 @@
                 {
                     _lengthString = [_lengthString substringToIndex:_length - i];
                 }
-                
             }
             //当结尾是.0时删除.0变成整数
             if ([_lengthString hasSuffix:@"0"])
@@ -311,17 +270,13 @@
         }
         
         if ([[sender currentTitle] isEqualToString:@"×"]) {
-            NSLog(@"%@",_haveChar);
             _haveChar = [sender currentTitle];
             //把新输入的_string加入到_num1中
             _leftNum = [_labelResult.text doubleValue];
             //计算结果Num3
             _resultNum = _rightNum *_leftNum ;
             _rightNum = _resultNum ;
-            NSLog(@"aaaaa%f",_resultNum);
-            
             _lengthString = [NSString stringWithFormat:@"%f", _rightNum];
-            
             _length = [_lengthString length];
             for(int i = 0; i<=5; i++)
             {
@@ -349,15 +304,9 @@
         
         if ([[sender currentTitle] isEqualToString:@"÷"])
         {
-            
-            
-            /*
-             if ([_display isEqualToString:@"0"] | [_display isEqualToString:@"0."] | ([_labelResult.text isEqualToString:@"0"] && ![_labelOperators.text isEqualToString:@""]) | [_haveChar isEqualToString:@"÷"]) {
-             _haveChar = [sender currentTitle];
-             return;
-             */
-            
-            if ([_labelResult.text isEqualToString:@"0"] | [_labelResult.text isEqualToString:@"0."] ) {
+ 
+            if ([_labelResult.text isEqualToString:@"0"] | [_labelResult.text isEqualToString:@"0."] )
+            {
                 _haveChar = @"÷";
             }
             else
@@ -368,7 +317,6 @@
                 //计算结果Num3
                 _resultNum = _rightNum / _leftNum ;
                 _rightNum = _resultNum ;
-                NSLog(@"aaaaa%f",_resultNum);
                 
                 _lengthString = [NSString stringWithFormat:@"%f", _rightNum];
                 
@@ -380,7 +328,6 @@
                     {
                         _lengthString = [_lengthString substringToIndex:_length - i];
                     }
-                    
                 }
                 //当结尾是.0时删除.0变成整数
                 if ([_lengthString hasSuffix:@"0"])
@@ -397,7 +344,6 @@
                 [_labelDisplay setText:_lengthString];
             }
         }
-        
     }
 }
 //按下等于号（ = ）事件
@@ -423,7 +369,6 @@
             _rightNum = [_labelDisplay.text doubleValue];
             _resultNum = _rightNum + _leftNum ;
             _rightNum = _resultNum ;
-            NSLog(@"aaaaa%f",_resultNum);
             _lengthString = [NSString stringWithFormat:@"%f", _resultNum];
             _length = [_lengthString length];
             for(int i = 0; i<=5; i++)
@@ -452,7 +397,6 @@
             _rightNum = [_labelDisplay.text doubleValue];
             _resultNum = _rightNum - _leftNum ;
             _rightNum = _resultNum ;
-            NSLog(@"aaaaa%f",_resultNum);
             _lengthString = [NSString stringWithFormat:@"%f", _resultNum];
             _length = [_lengthString length];
             for(int i = 0; i<=5; i++)
@@ -481,7 +425,6 @@
             _rightNum = [_labelDisplay.text doubleValue];
             _resultNum = _rightNum * _leftNum ;
             _rightNum = _resultNum ;
-            NSLog(@"aaaaa%f",_resultNum);
             _lengthString = [NSString stringWithFormat:@"%f", _resultNum];
             _length = [_lengthString length];
             for(int i = 0; i<=5; i++)
@@ -511,7 +454,6 @@
             _rightNum = [_labelDisplay.text doubleValue];
             _resultNum = _rightNum / _leftNum ;
             _rightNum = _resultNum ;
-            NSLog(@"aaaaa%f",_resultNum);
             _lengthString = [NSString stringWithFormat:@"%f", _resultNum];
             _length = [_lengthString length];
             for(int i = 0; i<=5; i++)
@@ -562,7 +504,6 @@
     isMinus = NO;
     if ([_labelOperators.text isEqualToString:@""] && [_labelResult.text isEqualToString:@"0"] )
     {
-        NSLog(@" asdfas");
         [_display setString:@""];
         _haveChar = @"";
         havePoint = NO;
@@ -587,7 +528,6 @@
     {
         [_display setString:@""];
         _labelResult.text = @"0";
-        havePoint = NO;
     }
     else
     {
@@ -606,11 +546,8 @@
             else if (![_labelResult.text isEqualToString:@"0"]) {
                 NSRange deleteRange = { [_display length] - 1, 1 };
                 [_display deleteCharactersInRange:deleteRange];
-                NSLog(@"%lu",(unsigned long)_display.length);
             }
             _labelResult.text = _display;
-            NSLog(@"aaaaa%@",_display);
-
         }
     }
 }
@@ -621,7 +558,7 @@
         isMinus = YES;
     }
     
-    NSLog(@" kai %@",_display);
+
     if ([_labelOperators.text isEqualToString:@"="]) {
         return;
     }
@@ -633,7 +570,6 @@
     
     if(([_labelResult.text isEqualToString:@"0"] | [_labelResult.text isEqualToString:@"0."])&&[_labelDisplay.text isEqualToString:@""]&&[_labelOperators.text isEqualToString:@""])
     {
-
         _lengthString = @"";
         _resultNum = 0;
         _rightNum = 0;
@@ -669,14 +605,6 @@
             }
             
         }
-        NSLog(@"asdfa1fsdfdfv%@",_lengthString);
-        NSScanner* scan = [NSScanner scannerWithString:_lengthString];
-        float val;
-        if([scan scanFloat:&val] && [scan isAtEnd])
-        {
-            havePoint = YES;
-        }
-        
         if ([_lengthString hasSuffix:@"0"])
         {
            _lengthString = [_lengthString substringToIndex:[_lengthString length] - 2];
@@ -690,16 +618,7 @@
     }
     else if(![_labelOperators.text isEqualToString:@""] && [_labelResult.text isEqualToString:@"0"])
     {
-        //判断LR显示字符串是否是Double类型
-        NSLog(@"asdfasdfawwwww%@",_display);
-        NSScanner* scan = [NSScanner scannerWithString:_labelResult.text];
-        float val;
-        if([scan scanFloat:&val] && [scan isAtEnd])
-        {
-            havePoint = NO;
-        }
         return;
-        
     }
     else
     {
@@ -732,17 +651,7 @@
         //输入值清零
         [_display setString:_lengthString];
         
-        
-        //判断LR显示字符串是否是Double类型
-        NSScanner* scan = [NSScanner scannerWithString:_labelResult.text];
-        float val;
-        if([scan scanFloat:&val] && [scan isAtEnd])
-        {
-            havePoint = YES;
-        }
     }
-    NSLog(@"_labelResult.text %@",_labelResult.text);
-     NSLog(@" wer %@",_display);
 }
 
 
@@ -923,7 +832,7 @@
         [button1 setTitle:[array1 objectAtIndex:i] forState:UIControlStateNormal];
         [button1 setBackgroundImage:[UIImage imageNamed:@"keypad_button_colored_background"] forState:UIControlStateNormal];
         [button1 setTintColor:[UIColor whiteColor]];
-        
+        button1.tag = i;
         
         [button1.layer setMasksToBounds:YES];
         [button1.layer setCornerRadius:0.0];
