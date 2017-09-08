@@ -695,22 +695,22 @@
     if (_DeviceScreenWidth == 320 && _DeviceScreenHeight == 480)
     {
         DeviceVersion = @"IPhone4";
-        _fontSize = 26;
+        _fontSize = 32;
     }
     else if (_DeviceScreenWidth == 320 && _DeviceScreenHeight == 568)
     {
         DeviceVersion = @"IPhone5/5s" ;
-        _fontSize = 32 ;
+        _fontSize = 38 ;
     }
     else if (_DeviceScreenWidth == 375 && _DeviceScreenHeight == 667)
     {
         DeviceVersion = @"IPhone6/7" ;
-        _fontSize = 36 ;
+        _fontSize = 42 ;
     }
     else if (_DeviceScreenWidth == 414 && _DeviceScreenHeight == 736)
     {
         DeviceVersion = @"IPhone6P/7P" ;
-        _fontSize = 40 ;
+        _fontSize = 48 ;
     }
     
     self.view.backgroundColor = [UIColor blackColor];
@@ -728,16 +728,16 @@
     self.labelResult.backgroundColor = [UIColor blackColor] ;
     self.labelResult.textColor = [UIColor whiteColor] ;
     self.labelResult.textAlignment = NSTextAlignmentRight;
-    self.labelResult.font = [UIFont systemFontOfSize:_fontSize] ;
+    self.labelResult.font = [UIFont fontWithName:@"PingFangTc-Ultralight" size:_fontSize+15];
     self.labelResult.text = @"0";
     
     //创建ResultlabelDisplay
-    _labelDisplay = [[UILabel alloc]initWithFrame:CGRectMake(0, 30, ResultLabelRectWidth-20, ResultLabelRectHeight/2)];
+    _labelDisplay = [[UILabel alloc]initWithFrame:CGRectMake(0, 18, ResultLabelRectWidth-20, ResultLabelRectHeight/2)];
     [self.view addSubview:_labelDisplay];
     self.labelDisplay.backgroundColor = [UIColor blackColor] ;
     self.labelDisplay.textColor = [UIColor whiteColor] ;
     self.labelDisplay.textAlignment = NSTextAlignmentRight;
-    self.labelDisplay.font = [UIFont systemFontOfSize:_fontSize-15] ;
+    self.labelDisplay.font = [UIFont fontWithName:@"PingFangTc-Ultralight" size:_fontSize-10];
     self.labelDisplay.text = @"";
     
     //创建ResultlabelOperators
@@ -746,7 +746,7 @@
     self.labelOperators.backgroundColor = [UIColor blackColor] ;
     self.labelOperators.textColor = [UIColor whiteColor] ;
     self.labelOperators.textAlignment = NSTextAlignmentCenter;
-    self.labelOperators.font = [UIFont systemFontOfSize:_fontSize-6] ;
+    self.labelOperators.font = [UIFont fontWithName:@"PingFangTc-Ultralight" size:_fontSize-6];
     self.labelOperators.text = @"";
     //添加1-9数字
     NSArray * array = [NSArray arrayWithObjects:@"1",@"2",@"3",@"4",@"5",@"6",@"7",@"8",@"9", nil] ;
