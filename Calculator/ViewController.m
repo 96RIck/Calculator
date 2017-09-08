@@ -80,7 +80,13 @@
 //按下数字点.事件
 -(void)point:(id)sender
 {
-    
+    if ([_labelResult.text containsString:@"."]) {
+        havePoint = YES;
+    }
+    else
+    {
+        havePoint = NO;
+    }
     
     
     if ([_labelOperators.text isEqualToString:@"="]) {
@@ -98,25 +104,14 @@
         havePoint = YES;
         _leftNum = [_display doubleValue];
     }
-  
     else if (havePoint)
     {
-        NSLog(@"aaaawwwwww");
-        //判断LR显示字符串是否是Double类型
-        NSScanner* scan = [NSScanner scannerWithString:_labelResult.text];
-        float val;
-        if([scan scanFloat:&val] && [scan isAtEnd])
-        {
             NSRange deleteRange = {[_display length] -1,1};  //创建deleteRange
-            [_display deleteCharactersInRange:deleteRange];
-        }
+           [_display deleteCharactersInRange:deleteRange];
     }
-    else
-    {
-        havePoint = YES;
-    }
+   
     // havePoint = NO;
-    _leftNum = [_display doubleValue];
+    _leftNum = [_labelResult.text doubleValue];
     
     NSLog(@"point%@",_display);
     self.labelResult.text = [NSString stringWithString:_display];
@@ -622,7 +617,10 @@
 //按下 （±）事件
 -(void)overTern:(id)sender
 {
-    havePoint = NO;
+    if ([_labelResult.text containsString:@"-"]) {
+        isMinus = YES;
+    }
+    
     NSLog(@" kai %@",_display);
     if ([_labelOperators.text isEqualToString:@"="]) {
         return;
@@ -633,15 +631,26 @@
     
     _overTurnNum =  fabs(_overTurnNum);
     
-    if([_labelResult.text isEqualToString:@"0"]&&[_labelDisplay.text isEqualToString:@""]&&[_labelOperators.text isEqualToString:@""])
+    if(([_labelResult.text isEqualToString:@"0"] | [_labelResult.text isEqualToString:@"0."])&&[_labelDisplay.text isEqualToString:@""]&&[_labelOperators.text isEqualToString:@""])
     {
-        //判断LR显示字符串是否是Double类型
-        NSScanner* scan = [NSScanner scannerWithString:_labelResult.text];
-        float val;
-        if([scan scanFloat:&val] && [scan isAtEnd])
-        {
-            havePoint = NO;
-        }
+
+        _lengthString = @"";
+        _resultNum = 0;
+        _rightNum = 0;
+        _leftNum = 0;
+        _length = 0;
+        [_display setString:@""];
+        _labelDisplay.text = @"";
+        _labelOperators.text = @"";
+        _labelResult.text = @"0";
+        _haveChar = @"";
+        return;
+    }
+    else if (([_labelResult.text isEqualToString:@"0"] | [_labelResult.text isEqualToString:@"0."])&&![_labelOperators.text isEqualToString:@""] )
+    {
+       
+        [_display setString:@""];
+        
         return;
     }
     
