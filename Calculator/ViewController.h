@@ -41,9 +41,5 @@
 @property(nonatomic,retain) NSArray *numbers;
 @property(nonatomic,retain) NSArray *Operators;
 
-
-
-
-
 @end
 
