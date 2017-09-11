@@ -11,31 +11,28 @@
 
 @interface ViewController : UIViewController
 {
-    BOOL isPlus;
     BOOL isMinus;
-    BOOL isMultiply;
-    BOOL isDivide;
-    BOOL isleftNum;
-    BOOL isrightNum;
-    BOOL havePoint;
-    BOOL isOperate;
+    BOOL getPoint;
     BOOL isFinish;
     BOOL isFirstInput;
     BOOL isSecondInput;
-  
 }
-@property(nonatomic,retain) UIButton *button ;
-@property(nonatomic,assign) int fontSize;
-@property(nonatomic,assign) NSInteger length;
-@property(nonatomic,retain) UILabel *labelResult ;
-@property(nonatomic,retain) UILabel *labelOperators ;
-@property(nonatomic,retain) UILabel *labelDisplay ;
-@property(nonatomic,assign) CGFloat DeviceScreenWidth ;
-@property(nonatomic,assign) CGFloat DeviceScreenHeight ;
 
-@property(nonatomic,retain) NSMutableString *display;
-@property(nonatomic,retain) NSString *haveChar;
+@property(nonatomic,retain) NSMutableString *inPutStr;
+@property(nonatomic,retain) UIButton *button ;
+
+@property(nonatomic,assign) NSInteger fontSize;
+@property(nonatomic,assign) NSInteger length;
+@property(nonatomic,assign) NSInteger DeviceScreenWidth ;
+@property(nonatomic,assign) NSInteger DeviceScreenHeight ;
+
+@property(nonatomic,retain) UILabel *labelResultTop ;
+@property(nonatomic,retain) UILabel *labelOperators ;
+@property(nonatomic,retain) UILabel *labelResultBottom ;
+
+@property(nonatomic,retain) NSString *strChar;
 @property(nonatomic,retain) NSString *lengthString;
+
 @property(nonatomic,assign) double leftNum;
 @property(nonatomic,assign) double rightNum;
 @property(nonatomic,assign) double resultNum;
@@ -43,7 +40,7 @@
 
 @property(nonatomic,retain) NSArray *numbers;
 @property(nonatomic,retain) NSArray *Operators;
-@property(nonatomic,retain) NSArray *Clears;
+
 
 
 
