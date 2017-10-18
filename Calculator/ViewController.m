@@ -68,6 +68,7 @@
         case 736:
             _fontSize = 48;
         default:
+            _fontSize = 38;
             break;
     }
     
